@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Oil & Gas Industry Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root{
@@ -92,7 +91,7 @@
       <div class="card chart-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
           <div>
-            <strong>Production & Price (Monthly)</strong>
+            <strong>World active rig (Monthly)</strong>
             <div class="muted">Compare barrels produced vs average price</div>
           </div>
           <div class="controls">
@@ -102,7 +101,7 @@
           </div>
         </div>
         <div>
-        <canvas id="productionChart" height="350"></canvas>
+        <canvas id="rigChart" height="350"></canvas>
         </div>
       </div>
 
@@ -134,12 +133,8 @@
           <table id="dataTable" style="width:100%;border-collapse:collapse;font-size:13px">
             <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
               <tr>
-                <th style="text-align:left;padding:8px">date</th>
-                <th style="text-align:right;padding:8px">production_mmbl</th>
-                <th style="text-align:right;padding:8px">price_usd</th>
-                <th style="text-align:right;padding:8px">upstream_rev</th>
-                <th style="text-align:right;padding:8px">midstream_rev</th>
-                <th style="text-align:right;padding:8px">downstream_rev</th>
+                <th style="text-align:left;padding:8px">Date</th>
+                <th style="text-align:right;padding:8px">World active rigs</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -150,7 +145,7 @@
 
     <footer>Static demo • Charts powered by Chart.js • Replace <code>sampleData</code> in the script with your dataset</footer>
   </div>
-  <script id="data" type="application/json">{
+  <script id="dataset" type="application/json">{
  "header":["DateTime", "what=rig_count"],
  "data":[
 ["1975-01-31", 2694],
@@ -799,15 +794,18 @@
 // Posted by c-smile, modified by community. See post 'Timeline' for change history
 // Retrieved 2025-11-17, License - CC BY-SA 4.0
 
-    var data = JSON.parse(document.getElementById('data').textContent);
+    var dataset = JSON.parse(document.getElementById('dataset').textContent);
 
    
 
     // ---------- UTILITIES ----------
-    const parseYear = d => d.split('-')[0];
+    function parseYear(dateString) {
+        date = new Date(dateString);
+        return date.getFullYear();
+    }
 
     // Build list of available years automatically
-    const years = Array.from(new Set(sampleData.map(r => parseYear(r[0])))).sort();
+    const years = Array.from(new Set(dataset.data.map(r => parseYear(r[0])))).sort();
     const yearSelect = document.getElementById('yearSelect');
      
     years.forEach(y => {
@@ -832,7 +830,7 @@
 
     // Helper to compute aggregates for a given year
     function aggregatesForYear(year){
-      const rows = sampleData.filter(r => parseYear(r[0]) === String(year));
+      const rows = dataset.data.filter(r => parseYear(r[0]) === parseInt(year));
       const totalProd = rows.reduce((s,r)=>s + r[1],0);
       const avgPrice = rows.length ? (rows.reduce((s,r)=>s + r[2],0) / rows.length) : 0;
       const rigs = rows.length ? Math.round(rows[rows.length-1][6]) : 0; // last month rigs
@@ -841,13 +839,13 @@
     }
 
     // ---------- CHARTS ----------
-    const productionCtx = document.getElementById('productionChart');
+    const rigCtx = document.getElementById('rigChart');
     const revenueCtx = document.getElementById('revenueChart');
     const reservesCtx = document.getElementById('reservesChart');
 
     
 
-    const productionChart = new Chart(productionCtx, {
+    const rigChart = new Chart(rigCtx, {
       type: 'bar',
       data: {labels: [], datasets: []},
       options: {
@@ -896,10 +894,6 @@
         tr.innerHTML = `
           <td style="padding:8px">${r[0]}</td>
           <td style="padding:8px;text-align:right">${r[1].toFixed(1)}</td>
-          <td style="padding:8px;text-align:right">${r[2].toFixed(2)}</td>
-          <td style="padding:8px;text-align:right">${r[3]}</td>
-          <td style="padding:8px;text-align:right">${r[4]}</td>
-          <td style="padding:8px;text-align:right">${r[5]}</td>
         `;
         tableBody.appendChild(tr);
       });
@@ -909,19 +903,19 @@
       const prodData = agg.rows.map(r=>r[1]);
       const priceData = agg.rows.map(r=>r[2]);
 
-      productionChart.data.labels = labels;
-      productionChart.data.datasets = [
-        {type:'bar',label:'Production (MMbbl)',yAxisID:'y',data:prodData,backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)',borderWidth:1},
-        {type:'line',label:'Price (USD)',yAxisID:'y1',data:priceData,tension:0.25,pointRadius:3,borderWidth:2}
+
+      rigChart.data.labels = labels;
+      rigChart.data.datasets = [
+        {type:'line',label:'World active rigs',yAxisID:'y', data:prodData, tension:0.10, pointRadius:3, borderWidth:2, backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)'}
       ];
-      productionChart.options = {
-        responsive:true,maintainAspectRatio:false,
+      rigChart.options = {
+        responsive:true,
+        maintainAspectRatio:false,
         scales:{
-          y:{position:'left',title:{display:true,text:'MMbbl'},beginAtZero:false},
-          y1:{position:'right',title:{display:true,text:'USD'},grid:{drawOnChartArea:false},beginAtZero:false}
+          y:{position:'left',title:{display:true,text:'Unit'},beginAtZero:false}
         }
       };
-      productionChart.update();
+      rigChart.update();
 
       // Revenue chart: sum months in year
       const totalUp = agg.rows.reduce((s,r)=>s + r[3],0);
@@ -957,8 +951,7 @@
       const a = document.createElement('a'); a.href = url; a.download = `oil_gas_data_${yearSelect.value}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     }); 
 
-    // OPTIONAL: If you want to allow upload of CSV/JSON to replace data, you can add a simple file input and parser.
-    // Keep the sample data for offline preview. To integrate with real backend or API, replace sampleData with fetched JSON.
+
 
   </script>
 </body>
