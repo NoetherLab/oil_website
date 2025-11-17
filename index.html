@@ -34,6 +34,7 @@
 
     /* charts */
     .chart-card{grid-column:span 8;padding:18px}
+    .chart-desc{grid-column:span 8;padding:18px; text-align: justify; text-justify: inter-word;}
     .side-card{grid-column:span 4;padding:18px}
     .full-card{grid-column:1/-1;padding:18px}
 
@@ -41,6 +42,7 @@
     .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     select,input[type=range]{background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit;padding:8px;border-radius:8px}
     button{background:linear-gradient(90deg,var(--accent),#4dd0e1);border:none;padding:8px 12px;border-radius:8px;color:#04202a;font-weight:600;cursor:pointer}
+    .button_date{background:linear-gradient(90deg,var(--accent),#4dd0e1);border:none;padding:8px 12px;border-radius:8px;color:#04202a;font-weight:600;cursor:pointer}
     .muted{color:var(--muted);font-size:13px}
     footer{color:var(--muted);margin-top:18px;font-size:13px}
 
@@ -62,6 +64,13 @@
     </header>
 
     <section class="grid" style="margin-bottom:12px">
+
+      <div class="card stat-card">
+        <div class="stat-title">Active Rigs</div>
+        <div id="activeRigs" class="stat-value">—</div>
+        <div class="muted">Operational rigs this month</div>
+      </div>
+
       <div class="card stat-card">
         <div class="stat-title">Total Production (MMbbl)</div>
         <div id="totalProduction" class="stat-value">—</div>
@@ -75,12 +84,6 @@
       </div>
 
       <div class="card stat-card">
-        <div class="stat-title">Active Rigs</div>
-        <div id="activeRigs" class="stat-value">—</div>
-        <div class="muted">Operational rigs this month</div>
-      </div>
-
-      <div class="card stat-card">
         <div class="stat-title">Estimated Reserves (Bboe)</div>
         <div id="reserves" class="stat-value">—</div>
         <div class="muted">Proven</div>
@@ -88,6 +91,8 @@
     </section>
 
     <section class="grid" style="align-items:start">
+      <div class="card chart-desc">The global active rig count shows a clear cyclical pattern over the past decade, with a strong recovery from the 2020 collapse followed by a gradual slowdown starting in mid-2023. After peaking near 1,900 rigs in early 2023, activity has steadily softened as investment and drilling momentum cooled across several regions. Throughout 2024 and into 2025, the numbers continue drifting downward, reflecting a more cautious operating environment and uneven demand signals. The most recent data point — 1,619 rigs in July 2025 — reinforces this trend, marking a continued step back from the highs of the post-pandemic rebound. While far above the 2020 lows, the latest figure suggests that the industry is settling into a slower expansion phase, with operators prioritizing efficiency and capital discipline over aggressive rig deployment.</div>
+
       <div class="card chart-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
           <div>
@@ -95,13 +100,18 @@
             <div class="muted">Compare barrels produced vs average price</div>
           </div>
           <div class="controls">
-            <label class="muted">Year</label>
-            <select id="yearSelect"></select>
             <button id="exportCsv">Export CSV</button>
           </div>
         </div>
+        <div style="margin-bottom:6px" class="controls">
+            <button id="filter1Y" class="button">1Y</button>
+            <button id="filter5Y" class="button">5Y</button>
+            <button id="filter10Y" class="button">10Y</button>
+            <button id="filter25Y" class="button">25Y</button>
+            <button id="filterAll" class="button">∞</button>
+          </div>
         <div>
-        <canvas id="rigChart" height="350"></canvas>
+            <canvas id="rigChart" height="350"></canvas>
         </div>
       </div>
 
@@ -758,63 +768,10 @@
 }
 </script>
   <script>
-    // ---------- SAMPLE DATA ----------
-    // This is a compact sample dataset covering 2023-2024 monthly values. Replace with your own data (CSV/JSON).
-    const sampleData = [
-      // date, production_mmbl, price_usd, upstream_rev_m, midstream_rev_m, downstream_rev_m, rigs_active
-      ["2023-01", 120.5, 82.1, 1800, 420, 1300, 230],
-      ["2023-02", 118.7, 85.4, 1750, 410, 1250, 228],
-      ["2023-03", 125.3, 86.0, 1900, 430, 1400, 235],
-      ["2023-04", 130.1, 79.2, 1950, 440, 1350, 240],
-      ["2023-05", 128.9, 76.5, 1920, 438, 1340, 238],
-      ["2023-06", 135.0, 74.3, 2050, 460, 1420, 245],
-      ["2023-07", 138.3, 78.1, 2100, 465, 1450, 247],
-      ["2023-08", 140.2, 81.5, 2150, 470, 1470, 250],
-      ["2023-09", 136.8, 83.2, 2080, 468, 1430, 246],
-      ["2023-10", 132.5, 86.8, 2020, 455, 1390, 243],
-      ["2023-11", 129.7, 90.1, 1980, 450, 1360, 241],
-      ["2023-12", 134.6, 92.5, 2070, 462, 1425, 246],
-
-      ["2024-01", 137.0, 94.2, 2100, 470, 1460, 248],
-      ["2024-02", 139.1, 88.5, 2150, 475, 1480, 252],
-      ["2024-03", 142.6, 91.3, 2200, 480, 1500, 255],
-      ["2024-04", 140.9, 89.0, 2180, 478, 1490, 253],
-      ["2024-05", 145.3, 95.4, 2250, 490, 1520, 258],
-      ["2024-06", 148.0, 101.2, 2300, 500, 1550, 262],
-      ["2024-07", 150.5, 102.8, 2350, 505, 1575, 264],
-      ["2024-08", 149.2, 100.4, 2320, 502, 1560, 263],
-      ["2024-09", 147.8, 98.0, 2290, 498, 1540, 261],
-      ["2024-10", 144.9, 96.6, 2240, 492, 1510, 259],
-      ["2024-11", 141.2, 95.0, 2180, 488, 1470, 256],
-      ["2024-12", 143.9, 97.1, 2220, 495, 1495, 258]
-    ];
-
-
-    // Source - https://stackoverflow.com/a
-// Posted by c-smile, modified by community. See post 'Timeline' for change history
-// Retrieved 2025-11-17, License - CC BY-SA 4.0
-
+   
     var dataset = JSON.parse(document.getElementById('dataset').textContent);
 
    
-
-    // ---------- UTILITIES ----------
-    function parseYear(dateString) {
-        date = new Date(dateString);
-        return date.getFullYear();
-    }
-
-    // Build list of available years automatically
-    const years = Array.from(new Set(dataset.data.map(r => parseYear(r[0])))).sort();
-    const yearSelect = document.getElementById('yearSelect');
-     
-    years.forEach(y => {
-      const opt = document.createElement('option'); opt.value = y; opt.textContent = y; yearSelect.appendChild(opt);
-    });
-    yearSelect.value = years[years.length-1];
-
-    
-
     // DOM references for stats
     const totalProductionEl = document.getElementById('totalProduction');
     const avgPriceEl = document.getElementById('avgPrice');
@@ -829,11 +786,14 @@
 
 
     // Helper to compute aggregates for a given year
-    function aggregatesForYear(year){
-      const rows = dataset.data.filter(r => parseYear(r[0]) === parseInt(year));
+    function aggregatesForYear(from_date, to_date){
+      const rows = dataset.data.filter(r => {
+        date = new Date(r[0]);
+        return date >= from_date && date < to_date;
+    });
       const totalProd = rows.reduce((s,r)=>s + r[1],0);
       const avgPrice = rows.length ? (rows.reduce((s,r)=>s + r[2],0) / rows.length) : 0;
-      const rigs = rows.length ? Math.round(rows[rows.length-1][6]) : 0; // last month rigs
+      const rigs = rows.length ? rows[rows.length-1][1] : 0; // last month rigs
       const reserves = 24.7; // dummy static reserves value (Bboe) - replace as needed
       return {rows,totalProd,avgPrice,rigs,reserves};
     }
@@ -879,8 +839,8 @@
     }
     });
 
-    function renderYear(year){
-      const agg = aggregatesForYear(year);
+    function renderYear(from_date, to_date){
+      const agg = aggregatesForYear(from_date, to_date);
       // Update stats
       totalProductionEl.textContent = agg.totalProd.toFixed(1);
       avgPriceEl.textContent = '$' + agg.avgPrice.toFixed(2);
@@ -906,7 +866,7 @@
 
       rigChart.data.labels = labels;
       rigChart.data.datasets = [
-        {type:'line',label:'World active rigs',yAxisID:'y', data:prodData, tension:0.10, pointRadius:3, borderWidth:2, backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)'}
+        {type:'line',label:'World active rigs',yAxisID:'y', data:prodData, tension:0.10, pointRadius:1, borderWidth:2, backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)'}
       ];
       rigChart.options = {
         responsive:true,
@@ -929,11 +889,58 @@
       reservesChart.update();
     }
 
-    // initial render
-    renderYear(yearSelect.value);
 
-    // change year
-    yearSelect.addEventListener('change',()=>renderYear(yearSelect.value));
+
+    to_date = new Date();
+    from_date = new Date();
+    from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 10 ));
+    
+
+    // initial render
+    renderYear(from_date, to_date);
+
+
+    document.getElementById('filter1Y').addEventListener('click',()=>{
+
+        to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 1 ));
+
+        renderYear(from_date, to_date);
+    });
+    document.getElementById('filter5Y').addEventListener('click',()=>{
+
+        to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 5 ));
+
+        renderYear(from_date, to_date);
+    });
+    document.getElementById('filter10Y').addEventListener('click',()=>{
+
+        to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 10 ));
+
+        renderYear(from_date, to_date);
+    });
+    document.getElementById('filter25Y').addEventListener('click',()=>{
+
+        to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 25 ));
+
+        renderYear(from_date, to_date);
+    });
+    document.getElementById('filterAll').addEventListener('click',()=>{
+
+       to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 100 ));
+
+        renderYear(from_date, to_date);
+    });
+
 
     // CSV export
     function toCsv(rows){
