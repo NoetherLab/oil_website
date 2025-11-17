@@ -1,0 +1,965 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oil & Gas Industry Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#00bcd4; --glass: rgba(255,255,255,0.03);
+      --success:#16a34a; --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#061021 0%, #071428 100%); color:#dbe7f0;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .container{max-width:1200px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4dd0e1);display:flex;align-items:center;justify-content:center;color:#04202a;font-weight:700;font-size:18px}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    /* cards grid */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
+    .stat-card{grid-column:span 3;min-height:84px;display:flex;flex-direction:column;justify-content:center}
+    .stat-title{font-size:12px;color:var(--muted)}
+    .stat-value{font-size:20px;font-weight:700;margin-top:6px}
+
+    /* charts */
+    .chart-card{grid-column:span 8;padding:18px}
+    .side-card{grid-column:span 4;padding:18px}
+    .full-card{grid-column:1/-1;padding:18px}
+
+    /* controls */
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    select,input[type=range]{background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit;padding:8px;border-radius:8px}
+    button{background:linear-gradient(90deg,var(--accent),#4dd0e1);border:none;padding:8px 12px;border-radius:8px;color:#04202a;font-weight:600;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    footer{color:var(--muted);margin-top:18px;font-size:13px}
+
+    @media (max-width:900px){
+      .stat-card{grid-column:span 6}
+      .chart-card{grid-column:span 12}
+      .side-card{grid-column:span 12}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">OG</div>
+      <div>
+        <h1>Oil &amp; Gas Industry Dashboard — Static</h1>
+        <p class="lead">Interactive static site with sample data, charts and export tools. Replace the sample data with your own CSV/JSON to display real metrics.</p>
+      </div>
+    </header>
+
+    <section class="grid" style="margin-bottom:12px">
+      <div class="card stat-card">
+        <div class="stat-title">Total Production (MMbbl)</div>
+        <div id="totalProduction" class="stat-value">—</div>
+        <div class="muted">Year-to-date</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-title">Average Oil Price (USD)</div>
+        <div id="avgPrice" class="stat-value">—</div>
+        <div class="muted">Brent — Monthly average</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-title">Active Rigs</div>
+        <div id="activeRigs" class="stat-value">—</div>
+        <div class="muted">Operational rigs this month</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-title">Estimated Reserves (Bboe)</div>
+        <div id="reserves" class="stat-value">—</div>
+        <div class="muted">Proven</div>
+      </div>
+    </section>
+
+    <section class="grid" style="align-items:start">
+      <div class="card chart-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div>
+            <strong>Production & Price (Monthly)</strong>
+            <div class="muted">Compare barrels produced vs average price</div>
+          </div>
+          <div class="controls">
+            <label class="muted">Year</label>
+            <select id="yearSelect"></select>
+            <button id="exportCsv">Export CSV</button>
+          </div>
+        </div>
+        <div>
+        <canvas id="productionChart" height="350"></canvas>
+        </div>
+      </div>
+
+      <div class="card side-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div>
+            <strong>Revenue by Segment</strong>
+            <div class="muted">Upstream / Midstream / Downstream</div>
+          </div>
+          <div class="muted">USD millions</div>
+        </div>
+        
+         <div>
+        <canvas id="revenueChart" height="160"></canvas>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
+        <strong>Reserves Mix</strong>
+        <div class="muted" style="margin-bottom:8px">Crude, Natural Gas, Condensates</div>
+         <div>
+        <canvas id="reservesChart" height="120"></canvas>
+        </div>
+      </div>
+
+      <div class="card full-card">
+        <strong>Data Table (sample)</strong>
+        <div class="muted" style="margin:8px 0 12px">Monthly sample dataset used for charts. Use the Export CSV button to download.</div>
+        <div style="overflow:auto;max-height:220px;border-radius:8px;padding:6px;background:rgba(255,255,255,0.01)">
+          <table id="dataTable" style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
+              <tr>
+                <th style="text-align:left;padding:8px">date</th>
+                <th style="text-align:right;padding:8px">production_mmbl</th>
+                <th style="text-align:right;padding:8px">price_usd</th>
+                <th style="text-align:right;padding:8px">upstream_rev</th>
+                <th style="text-align:right;padding:8px">midstream_rev</th>
+                <th style="text-align:right;padding:8px">downstream_rev</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>Static demo • Charts powered by Chart.js • Replace <code>sampleData</code> in the script with your dataset</footer>
+  </div>
+  <script id="data" type="application/json">{
+ "header":["DateTime", "what=rig_count"],
+ "data":[
+["1975-01-31", 2694],
+["1975-02-28", 2718],
+["1975-03-31", 2769],
+["1975-04-30", 2593],
+["1975-05-31", 2557],
+["1975-06-30", 2650],
+["1975-07-31", 2670],
+["1975-08-31", 2711],
+["1975-09-30", 2743],
+["1975-10-31", 2801],
+["1975-11-30", 2853],
+["1975-12-31", 2899],
+["1976-01-31", 2871],
+["1976-02-29", 2765],
+["1976-03-31", 2699],
+["1976-04-30", 2511],
+["1976-05-31", 2578],
+["1976-06-30", 2698],
+["1976-07-31", 2723],
+["1976-08-31", 2848],
+["1976-09-30", 2888],
+["1976-10-31", 2936],
+["1976-11-30", 2976],
+["1976-12-31", 3013],
+["1977-01-31", 3033],
+["1977-02-28", 3095],
+["1977-03-31", 3123],
+["1977-04-30", 3012],
+["1977-05-31", 3098],
+["1977-06-30", 3182],
+["1977-07-31", 3233],
+["1977-08-31", 3317],
+["1977-09-30", 3313],
+["1977-10-31", 3353],
+["1977-11-30", 3398],
+["1977-12-31", 3444],
+["1978-01-31", 3403],
+["1978-02-28", 3452],
+["1978-03-31", 3486],
+["1978-04-30", 3423],
+["1978-05-31", 3507],
+["1978-06-30", 3605],
+["1978-07-31", 3667],
+["1978-08-31", 3712],
+["1978-09-30", 3701],
+["1978-10-31", 3738],
+["1978-11-30", 3800],
+["1978-12-31", 3737],
+["1979-01-31", 3610],
+["1979-02-28", 3520],
+["1979-03-31", 3409],
+["1979-04-30", 3271],
+["1979-05-31", 3270],
+["1979-06-30", 3436],
+["1979-07-31", 3565],
+["1979-08-31", 3749],
+["1979-09-30", 3865],
+["1979-10-31", 3963],
+["1979-11-30", 4070],
+["1979-12-31", 4176],
+["1980-01-31", 4155],
+["1980-02-29", 4275],
+["1980-03-31", 4318],
+["1980-04-30", 4271],
+["1980-05-31", 4442],
+["1980-06-30", 4534],
+["1980-07-31", 4674],
+["1980-08-31", 4796],
+["1980-09-30", 4835],
+["1980-10-31", 4905],
+["1980-11-30", 4989],
+["1980-12-31", 5037],
+["1981-01-31", 5105],
+["1981-02-28", 5309],
+["1981-03-31", 5382],
+["1981-04-30", 5267],
+["1981-05-31", 5358],
+["1981-06-30", 5515],
+["1981-07-31", 5605],
+["1981-08-31", 5750],
+["1981-09-30", 5885],
+["1981-10-31", 5995],
+["1981-11-30", 6093],
+["1981-12-31", 6227],
+["1982-01-31", 6148],
+["1982-02-28", 5965],
+["1982-03-31", 5589],
+["1982-04-30", 5035],
+["1982-05-31", 4741],
+["1982-06-30", 4513],
+["1982-07-31", 4350],
+["1982-08-31", 4226],
+["1982-09-30", 4088],
+["1982-10-31", 4038],
+["1982-11-30", 4260],
+["1982-12-31", 4489],
+["1983-01-31", 4279],
+["1983-02-28", 3806],
+["1983-03-31", 3551],
+["1983-04-30", 3203],
+["1983-05-31", 3275],
+["1983-06-30", 3439],
+["1983-07-31", 3500],
+["1983-08-31", 3656],
+["1983-09-30", 3706],
+["1983-10-31", 3799],
+["1983-11-30", 4011],
+["1983-12-31", 4270],
+["1984-01-31", 4133],
+["1984-02-29", 3971],
+["1984-03-31", 3789],
+["1984-04-30", 3454],
+["1984-05-31", 3655],
+["1984-06-30", 3800],
+["1984-07-31", 3858],
+["1984-08-31", 3928],
+["1984-09-30", 3911],
+["1984-10-31", 3995],
+["1984-11-30", 4174],
+["1984-12-31", 4331],
+["1985-01-31", 4050],
+["1985-02-28", 3836],
+["1985-03-31", 3610],
+["1985-04-30", 3281],
+["1985-05-31", 3310],
+["1985-06-30", 3455],
+["1985-07-31", 3516],
+["1985-08-31", 3546],
+["1985-09-30", 3507],
+["1985-10-31", 3464],
+["1985-11-30", 3550],
+["1985-12-31", 3618],
+["1986-01-31", 3495],
+["1986-02-28", 3123],
+["1986-03-31", 2681],
+["1986-04-30", 2144],
+["1986-05-31", 1938],
+["1986-06-30", 1851],
+["1986-07-31", 1772],
+["1986-08-31", 1823],
+["1986-09-30", 1826],
+["1986-10-31", 1903],
+["1986-11-30", 1957],
+["1986-12-31", 2132],
+["1987-01-31", 2125],
+["1987-02-28", 1909],
+["1987-03-31", 1889],
+["1987-04-30", 1782],
+["1987-05-31", 1785],
+["1987-06-30", 1879],
+["1987-07-31", 2027],
+["1987-08-31", 2166],
+["1987-09-30", 2336],
+["1987-10-31", 2396],
+["1987-11-30", 2461],
+["1987-12-31", 2411],
+["1988-01-31", 2283],
+["1988-02-29", 2313],
+["1988-03-31", 2301],
+["1988-04-30", 2052],
+["1988-05-31", 2063],
+["1988-06-30", 2114],
+["1988-07-31", 2121],
+["1988-08-31", 2144],
+["1988-09-30", 2218],
+["1988-10-31", 2145],
+["1988-11-30", 2185],
+["1988-12-31", 2031],
+["1989-01-31", 1955],
+["1989-02-28", 1957],
+["1989-03-31", 1919],
+["1989-04-30", 1802],
+["1989-05-31", 1735],
+["1989-06-30", 1787],
+["1989-07-31", 1832],
+["1989-08-31", 1866],
+["1989-09-30", 1951],
+["1989-10-31", 2020],
+["1989-11-30", 2079],
+["1989-12-31", 2127],
+["1990-01-31", 2073],
+["1990-02-28", 2049],
+["1990-03-31", 2054],
+["1990-04-30", 1947],
+["1990-05-31", 1964],
+["1990-06-30", 2037],
+["1990-07-31", 2029],
+["1990-08-31", 1987],
+["1990-09-30", 2004],
+["1990-10-31", 2069],
+["1990-11-30", 2202],
+["1990-12-31", 2214],
+["1991-01-31", 2141],
+["1991-02-28", 2084],
+["1991-03-31", 2045],
+["1991-04-30", 1839],
+["1991-05-31", 1786],
+["1991-06-30", 1868],
+["1991-07-31", 1861],
+["1991-08-31", 1822],
+["1991-09-30", 1755],
+["1991-10-31", 1821],
+["1991-11-30", 1848],
+["1991-12-31", 1831],
+["1992-01-31", 1743],
+["1992-02-29", 1694],
+["1992-03-31", 1615],
+["1992-04-30", 1549],
+["1992-05-31", 1557],
+["1992-06-30", 1552],
+["1992-07-31", 1616],
+["1992-08-31", 1625],
+["1992-09-30", 1625],
+["1992-10-31", 1721],
+["1992-11-30", 1853],
+["1992-12-31", 1898],
+["1993-01-31", 1761],
+["1993-02-28", 1686],
+["1993-03-31", 1622],
+["1993-04-30", 1483],
+["1993-05-31", 1525],
+["1993-06-30", 1651],
+["1993-07-31", 1668],
+["1993-08-31", 1732],
+["1993-09-30", 1795],
+["1993-10-31", 1847],
+["1993-11-30", 1881],
+["1993-12-31", 1881],
+["1994-01-31", 1857],
+["1994-02-28", 1826],
+["1994-03-31", 1738],
+["1994-04-30", 1594],
+["1994-05-31", 1610],
+["1994-06-30", 1716],
+["1994-07-31", 1754],
+["1994-08-31", 1755],
+["1994-09-30", 1824],
+["1994-10-31", 1825],
+["1994-11-30", 1876],
+["1994-12-31", 1834],
+["1995-01-31", 1836],
+["1995-02-28", 1826],
+["1995-03-31", 1695],
+["1995-04-30", 1521],
+["1995-05-31", 1551],
+["1995-06-30", 1685],
+["1995-07-31", 1716],
+["1995-08-31", 1710],
+["1995-09-30", 1742],
+["1995-10-31", 1721],
+["1995-11-30", 1747],
+["1995-12-31", 1797],
+["1996-01-31", 1827],
+["1996-02-29", 1841],
+["1996-03-31", 1819],
+["1996-04-30", 1620],
+["1996-05-31", 1677],
+["1996-06-30", 1812],
+["1996-07-31", 1890],
+["1996-08-31", 1886],
+["1996-09-30", 1860],
+["1996-10-31", 1902],
+["1996-11-30", 1958],
+["1996-12-31", 2005],
+["1997-01-31", 2032],
+["1997-02-28", 2067],
+["1997-03-31", 2067],
+["1997-04-30", 1914],
+["1997-05-31", 1969],
+["1997-06-30", 2121],
+["1997-07-31", 2168],
+["1997-08-31", 2215],
+["1997-09-30", 2211],
+["1997-10-31", 2224],
+["1997-11-30", 2230],
+["1997-12-31", 2318],
+["1998-01-31", 2293],
+["1998-02-28", 2290],
+["1998-03-31", 2128],
+["1998-04-30", 1819],
+["1998-05-31", 1810],
+["1998-06-30", 1882],
+["1998-07-31", 1764],
+["1998-08-31", 1725],
+["1998-09-30", 1693],
+["1998-10-31", 1573],
+["1998-11-30", 1578],
+["1998-12-31", 1566],
+["1999-01-31", 1563],
+["1999-02-28", 1486],
+["1999-03-31", 1337],
+["1999-04-30", 1156],
+["1999-05-31", 1171],
+["1999-06-30", 1347],
+["1999-07-31", 1384],
+["1999-08-31", 1465],
+["1999-09-30", 1528],
+["1999-10-31", 1595],
+["1999-11-30", 1693],
+["1999-12-31", 1757],
+["2000-01-31", 1837],
+["2000-02-29", 1869],
+["2000-03-31", 1773],
+["2000-04-30", 1553],
+["2000-05-31", 1660],
+["2000-06-30", 1826],
+["2000-07-31", 1912],
+["2000-08-31", 2011],
+["2000-09-30", 2039],
+["2000-10-31", 2135],
+["2000-11-30", 2129],
+["2000-12-31", 2212],
+["2001-01-31", 2374],
+["2001-02-28", 2430],
+["2001-03-31", 2331],
+["2001-04-30", 2165],
+["2001-05-31", 2224],
+["2001-06-30", 2333],
+["2001-07-31", 2345],
+["2001-08-31", 2333],
+["2001-09-30", 2276],
+["2001-10-31", 2165],
+["2001-11-30", 2007],
+["2001-12-31", 1917],
+["2002-01-31", 2016],
+["2002-02-28", 1974],
+["2002-03-31", 1808],
+["2002-04-30", 1597],
+["2002-05-31", 1658],
+["2002-06-30", 1778],
+["2002-07-31", 1822],
+["2002-08-31", 1805],
+["2002-09-30", 1837],
+["2002-10-31", 1818],
+["2002-11-30", 1875],
+["2002-12-31", 1957],
+["2003-01-31", 2066],
+["2003-02-28", 2213],
+["2003-03-31", 2137],
+["2003-04-30", 1904],
+["2003-05-31", 1940],
+["2003-06-30", 2144],
+["2003-07-31", 2254],
+["2003-08-31", 2273],
+["2003-09-30", 2233],
+["2003-10-31", 2286],
+["2003-11-30", 2304],
+["2003-12-31", 2334],
+["2004-01-31", 2457],
+["2004-02-29", 2477],
+["2004-03-31", 2397],
+["2004-04-30", 2136],
+["2004-05-31", 2190],
+["2004-06-30", 2282],
+["2004-07-31", 2381],
+["2004-08-31", 2443],
+["2004-09-30", 2379],
+["2004-10-31", 2454],
+["2004-11-30", 2585],
+["2004-12-31", 2555],
+["2005-01-31", 2665],
+["2005-02-28", 2745],
+["2005-03-31", 2617],
+["2005-04-30", 2415],
+["2005-05-31", 2485],
+["2005-06-30", 2580],
+["2005-07-31", 2759],
+["2005-08-31", 2894],
+["2005-09-30", 2856],
+["2005-10-31", 2923],
+["2005-11-30", 3021],
+["2005-12-31", 2993],
+["2006-01-31", 3038],
+["2006-02-28", 3133],
+["2006-03-31", 3069],
+["2006-04-30", 2707],
+["2006-05-31", 2795],
+["2006-06-30", 2979],
+["2006-07-31", 3155],
+["2006-08-31", 3174],
+["2006-09-30", 3134],
+["2006-10-31", 3130],
+["2006-11-30", 3077],
+["2006-12-31", 3125],
+["2007-01-31", 3254],
+["2007-02-28", 3352],
+["2007-03-31", 3135],
+["2007-04-30", 2836],
+["2007-05-31", 2862],
+["2007-06-30", 2996],
+["2007-07-31", 3144],
+["2007-08-31", 3156],
+["2007-09-30", 3166],
+["2007-10-31", 3124],
+["2007-11-30", 3161],
+["2007-12-31", 3207],
+["2008-01-31", 3296],
+["2008-02-29", 3417],
+["2008-03-31", 3259],
+["2008-04-30", 3009],
+["2008-05-31", 3073],
+["2008-06-30", 3269],
+["2008-07-31", 3436],
+["2008-08-31", 3523],
+["2008-09-30", 3557],
+["2008-10-31", 3518],
+["2008-11-30", 3448],
+["2008-12-31", 3221],
+["2009-01-31", 2974],
+["2009-02-28", 2753],
+["2009-03-31", 2313],
+["2009-04-30", 2055],
+["2009-05-31", 1983],
+["2009-06-30", 1987],
+["2009-07-31", 2080],
+["2009-08-31", 2105],
+["2009-09-30", 2203],
+["2009-10-31", 2271],
+["2009-11-30", 2409],
+["2009-12-31", 2509],
+["2010-01-31", 2773],
+["2010-02-28", 2982],
+["2010-03-31", 2879],
+["2010-04-30", 2676],
+["2010-05-31", 2750],
+["2010-06-30", 2859],
+["2010-07-31", 3032],
+["2010-08-31", 3127],
+["2010-09-30", 3122],
+["2010-10-31", 3165],
+["2010-11-30", 3233],
+["2010-12-31", 3227],
+["2011-01-31", 3436],
+["2011-02-28", 3536],
+["2011-03-31", 3434],
+["2011-04-30", 3103],
+["2011-05-31", 3130],
+["2011-06-30", 3257],
+["2011-07-31", 3397],
+["2011-08-31", 3613],
+["2011-09-30", 3662],
+["2011-10-31", 3722],
+["2011-11-30", 3683],
+["2011-12-31", 3612],
+["2012-01-31", 3751],
+["2012-02-29", 3900],
+["2012-03-31", 3663],
+["2012-04-30", 3298],
+["2012-05-31", 3335],
+["2012-06-30", 3484],
+["2012-07-31", 3516],
+["2012-08-31", 3490],
+["2012-09-30", 3468],
+["2012-10-31", 3458],
+["2012-11-30", 3461],
+["2012-12-31", 3390],
+["2013-01-31", 3535],
+["2013-02-28", 3676],
+["2013-03-31", 3484],
+["2013-04-30", 3205],
+["2013-05-31", 3173],
+["2013-06-30", 3274],
+["2013-07-31", 3356],
+["2013-08-31", 3412],
+["2013-09-30", 3427],
+["2013-10-31", 3433],
+["2013-11-30", 3448],
+["2013-12-31", 3473],
+["2014-01-31", 3595],
+["2014-02-28", 3732],
+["2014-03-31", 3592],
+["2014-04-30", 3385],
+["2014-05-31", 3369],
+["2014-06-30", 3442],
+["2014-07-31", 3605],
+["2014-08-31", 3638],
+["2014-09-30", 3655],
+["2014-10-31", 3654],
+["2014-11-30", 3666],
+["2014-12-31", 3520],
+["2015-01-31", 3313],
+["2015-02-28", 2983],
+["2015-03-31", 2552],
+["2015-04-30", 2264],
+["2015-05-31", 2124],
+["2015-06-30", 2131],
+["2015-07-31", 2162],
+["2015-08-31", 2222],
+["2015-09-30", 2168],
+["2015-10-31", 2083],
+["2015-11-30", 2044],
+["2015-12-31", 1947],
+["2016-01-31", 1904],
+["2016-02-29", 1759],
+["2016-03-31", 1547],
+["2016-04-30", 1420],
+["2016-05-31", 1399],
+["2016-06-30", 1402],
+["2016-07-31", 1477],
+["2016-08-31", 1544],
+["2016-09-30", 1577],
+["2016-10-31", 1617],
+["2016-11-30", 1673],
+["2016-12-31", 1769],
+["2017-01-31", 1915],
+["2017-02-28", 2022],
+["2017-03-31", 1983],
+["2017-04-30", 1915],
+["2017-05-31", 1933],
+["2017-06-30", 2038],
+["2017-07-31", 2105],
+["2017-08-31", 2112],
+["2017-09-30", 2077],
+["2017-10-31", 2073],
+["2017-11-30", 2054],
+["2017-12-31", 2087],
+["2018-01-31", 2171],
+["2018-02-28", 2267],
+["2018-03-31", 2173],
+["2018-04-30", 2083],
+["2018-05-31", 2090],
+["2018-06-30", 2147],
+["2018-07-31", 2246],
+["2018-08-31", 2275],
+["2018-09-30", 2254],
+["2018-10-31", 2267],
+["2018-11-30", 2264],
+["2018-12-31", 2238],
+["2019-01-31", 2261],
+["2019-02-28", 2301],
+["2019-03-31", 2208],
+["2019-04-30", 2138],
+["2019-05-31", 2179],
+["2019-06-30", 2217],
+["2019-07-31", 2233],
+["2019-08-31", 2202],
+["2019-09-30", 2137],
+["2019-10-31", 2120],
+["2019-11-30", 2039],
+["2019-12-31", 2041],
+["2020-01-31", 2071],
+["2020-02-29", 2120],
+["2020-03-31", 1959],
+["2020-04-30", 1511],
+["2020-05-31", 1174],
+["2020-06-30", 1071],
+["2020-07-31", 1027],
+["2020-08-31", 1047],
+["2020-09-30", 1015],
+["2020-10-31", 1015],
+["2020-11-30", 1071],
+["2020-12-31", 1094],
+["2021-01-31", 1203],
+["2021-02-28", 1266],
+["2021-03-31", 1230],
+["2021-04-30", 1185],
+["2021-05-31", 1260],
+["2021-06-30", 1322],
+["2021-07-31", 1377],
+["2021-08-31", 1430],
+["2021-09-30", 1446],
+["2021-10-31", 1500],
+["2021-11-30", 1541],
+["2021-12-31", 1559],
+["2022-01-31", 1630],
+["2022-02-28", 1666],
+["2022-03-31", 1658],
+["2022-04-30", 1600],
+["2022-05-31", 1625],
+["2022-06-30", 1701],
+["2022-07-31", 1772],
+["2022-08-31", 1822],
+["2022-09-30", 1848],
+["2022-10-31", 1889],
+["2022-11-30", 1888],
+["2022-12-31", 1833],
+["2023-01-31", 1898],
+["2023-02-28", 1919],
+["2023-03-31", 1876],
+["2023-04-30", 1805],
+["2023-05-31", 1779],
+["2023-06-30", 1795],
+["2023-07-31", 1816],
+["2023-08-31", 1786],
+["2023-09-30", 1757],
+["2023-10-31", 1772],
+["2023-11-30", 1791],
+["2023-12-31", 1735],
+["2024-01-31", 1780],
+["2024-02-29", 1809],
+["2024-03-31", 1789],
+["2024-04-30", 1723],
+["2024-05-31", 1673],
+["2024-06-30", 1703],
+["2024-07-31", 1710],
+["2024-08-31", 1732],
+["2024-09-30", 1748],
+["2024-10-31", 1751],
+["2024-11-30", 1704],
+["2024-12-31", 1658],
+["2025-01-31", 1692],
+["2025-02-28", 1739],
+["2025-03-31", 1682],
+["2025-04-30", 1613],
+["2025-05-31", 1573],
+["2025-06-30", 1597],
+["2025-07-31", 1619]]
+}
+</script>
+  <script>
+    // ---------- SAMPLE DATA ----------
+    // This is a compact sample dataset covering 2023-2024 monthly values. Replace with your own data (CSV/JSON).
+    const sampleData = [
+      // date, production_mmbl, price_usd, upstream_rev_m, midstream_rev_m, downstream_rev_m, rigs_active
+      ["2023-01", 120.5, 82.1, 1800, 420, 1300, 230],
+      ["2023-02", 118.7, 85.4, 1750, 410, 1250, 228],
+      ["2023-03", 125.3, 86.0, 1900, 430, 1400, 235],
+      ["2023-04", 130.1, 79.2, 1950, 440, 1350, 240],
+      ["2023-05", 128.9, 76.5, 1920, 438, 1340, 238],
+      ["2023-06", 135.0, 74.3, 2050, 460, 1420, 245],
+      ["2023-07", 138.3, 78.1, 2100, 465, 1450, 247],
+      ["2023-08", 140.2, 81.5, 2150, 470, 1470, 250],
+      ["2023-09", 136.8, 83.2, 2080, 468, 1430, 246],
+      ["2023-10", 132.5, 86.8, 2020, 455, 1390, 243],
+      ["2023-11", 129.7, 90.1, 1980, 450, 1360, 241],
+      ["2023-12", 134.6, 92.5, 2070, 462, 1425, 246],
+
+      ["2024-01", 137.0, 94.2, 2100, 470, 1460, 248],
+      ["2024-02", 139.1, 88.5, 2150, 475, 1480, 252],
+      ["2024-03", 142.6, 91.3, 2200, 480, 1500, 255],
+      ["2024-04", 140.9, 89.0, 2180, 478, 1490, 253],
+      ["2024-05", 145.3, 95.4, 2250, 490, 1520, 258],
+      ["2024-06", 148.0, 101.2, 2300, 500, 1550, 262],
+      ["2024-07", 150.5, 102.8, 2350, 505, 1575, 264],
+      ["2024-08", 149.2, 100.4, 2320, 502, 1560, 263],
+      ["2024-09", 147.8, 98.0, 2290, 498, 1540, 261],
+      ["2024-10", 144.9, 96.6, 2240, 492, 1510, 259],
+      ["2024-11", 141.2, 95.0, 2180, 488, 1470, 256],
+      ["2024-12", 143.9, 97.1, 2220, 495, 1495, 258]
+    ];
+
+
+    // Source - https://stackoverflow.com/a
+// Posted by c-smile, modified by community. See post 'Timeline' for change history
+// Retrieved 2025-11-17, License - CC BY-SA 4.0
+
+    var data = JSON.parse(document.getElementById('data').textContent);
+
+   
+
+    // ---------- UTILITIES ----------
+    const parseYear = d => d.split('-')[0];
+
+    // Build list of available years automatically
+    const years = Array.from(new Set(sampleData.map(r => parseYear(r[0])))).sort();
+    const yearSelect = document.getElementById('yearSelect');
+     
+    years.forEach(y => {
+      const opt = document.createElement('option'); opt.value = y; opt.textContent = y; yearSelect.appendChild(opt);
+    });
+    yearSelect.value = years[years.length-1];
+
+    
+
+    // DOM references for stats
+    const totalProductionEl = document.getElementById('totalProduction');
+    const avgPriceEl = document.getElementById('avgPrice');
+    const activeRigsEl = document.getElementById('activeRigs');
+    const reservesEl = document.getElementById('reserves');
+
+      
+
+    // table body
+    const tableBody = document.getElementById('tableBody');
+
+
+
+    // Helper to compute aggregates for a given year
+    function aggregatesForYear(year){
+      const rows = sampleData.filter(r => parseYear(r[0]) === String(year));
+      const totalProd = rows.reduce((s,r)=>s + r[1],0);
+      const avgPrice = rows.length ? (rows.reduce((s,r)=>s + r[2],0) / rows.length) : 0;
+      const rigs = rows.length ? Math.round(rows[rows.length-1][6]) : 0; // last month rigs
+      const reserves = 24.7; // dummy static reserves value (Bboe) - replace as needed
+      return {rows,totalProd,avgPrice,rigs,reserves};
+    }
+
+    // ---------- CHARTS ----------
+    const productionCtx = document.getElementById('productionChart');
+    const revenueCtx = document.getElementById('revenueChart');
+    const reservesCtx = document.getElementById('reservesChart');
+
+    
+
+    const productionChart = new Chart(productionCtx, {
+      type: 'bar',
+      data: {labels: [], datasets: []},
+      options: {
+        responsive:true, 
+        maintainAspectRatio:false,
+        scales:{
+          y:{beginAtZero:true}
+        },
+        plugins:{legend:{display:true}}
+      }
+    });
+
+    
+
+    
+    const revenueChart = new Chart(revenueCtx, {
+      type: 'bar',
+      data: {labels: ['Upstream','Midstream','Downstream'], datasets:[{label:'Revenue (USD m)',data:[0,0,0]}]},
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        scales:{y:{beginAtZero:true}}}
+    }); 
+
+    const reservesChart = new Chart(reservesCtx, {
+      type: 'pie',
+      data:{labels:['Crude','Natural Gas','Condensates'],datasets:[{data:[0,0,0],backgroundColor:['#4dd0e1','#00bcd4','#0288d1']}]},
+      options:{
+        responsive:true,
+        maintainAspectRatio:false
+    }
+    });
+
+    function renderYear(year){
+      const agg = aggregatesForYear(year);
+      // Update stats
+      totalProductionEl.textContent = agg.totalProd.toFixed(1);
+      avgPriceEl.textContent = '$' + agg.avgPrice.toFixed(2);
+      activeRigsEl.textContent = agg.rigs;
+      reservesEl.textContent = agg.reserves + ' Bboe';
+
+      // Table
+      tableBody.innerHTML = '';
+      agg.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="padding:8px">${r[0]}</td>
+          <td style="padding:8px;text-align:right">${r[1].toFixed(1)}</td>
+          <td style="padding:8px;text-align:right">${r[2].toFixed(2)}</td>
+          <td style="padding:8px;text-align:right">${r[3]}</td>
+          <td style="padding:8px;text-align:right">${r[4]}</td>
+          <td style="padding:8px;text-align:right">${r[5]}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Production/Price chart: dual axes
+      const labels = agg.rows.map(r=>r[0]);
+      const prodData = agg.rows.map(r=>r[1]);
+      const priceData = agg.rows.map(r=>r[2]);
+
+      productionChart.data.labels = labels;
+      productionChart.data.datasets = [
+        {type:'bar',label:'Production (MMbbl)',yAxisID:'y',data:prodData,backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)',borderWidth:1},
+        {type:'line',label:'Price (USD)',yAxisID:'y1',data:priceData,tension:0.25,pointRadius:3,borderWidth:2}
+      ];
+      productionChart.options = {
+        responsive:true,maintainAspectRatio:false,
+        scales:{
+          y:{position:'left',title:{display:true,text:'MMbbl'},beginAtZero:false},
+          y1:{position:'right',title:{display:true,text:'USD'},grid:{drawOnChartArea:false},beginAtZero:false}
+        }
+      };
+      productionChart.update();
+
+      // Revenue chart: sum months in year
+      const totalUp = agg.rows.reduce((s,r)=>s + r[3],0);
+      const totalMid = agg.rows.reduce((s,r)=>s + r[4],0);
+      const totalDown = agg.rows.reduce((s,r)=>s + r[5],0);
+      revenueChart.data.datasets[0].data = [totalUp,totalMid,totalDown];
+      revenueChart.update();
+
+      // Reserves pie - simple static split based on heuristic (replace with real values)
+      reservesChart.data.datasets[0].data = [agg.reserves * 0.6, agg.reserves * 0.3, agg.reserves * 0.1];
+      reservesChart.update();
+    }
+
+    // initial render
+    renderYear(yearSelect.value);
+
+    // change year
+    yearSelect.addEventListener('change',()=>renderYear(yearSelect.value));
+
+    // CSV export
+    function toCsv(rows){
+      const header = ['date','production_mmbl','price_usd','upstream_rev','midstream_rev','downstream_rev'];
+      const lines = [header.join(',')];
+      rows.forEach(r => lines.push([r[0],r[1],r[2],r[3],r[4],r[5]].join(',')));
+      return lines.join('\n');
+    }
+
+    document.getElementById('exportCsv').addEventListener('click',()=>{
+      const agg = aggregatesForYear(yearSelect.value);
+      const csv = toCsv(agg.rows);
+      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `oil_gas_data_${yearSelect.value}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }); 
+
+    // OPTIONAL: If you want to allow upload of CSV/JSON to replace data, you can add a simple file input and parser.
+    // Keep the sample data for offline preview. To integrate with real backend or API, replace sampleData with fetched JSON.
+
+  </script>
+</body>
+</html>
