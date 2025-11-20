@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: hhttps://rig-central.com/sitemap.xml
+Sitemap: https://rig-central.com/sitemap.xml
