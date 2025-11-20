@@ -1,141 +1,293 @@
-
-
 <!doctype html>
 <html lang="en">
+
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2DQYKW6L6"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-    gtag('config', 'G-B2DQYKW6L6');
+        gtag('config', 'G-B2DQYKW6L6');
     </script>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>World Oil & Gas Rig Count</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#00bcd4; --glass: rgba(255,255,255,0.03);
-      --success:#16a34a; --danger:#ef4444;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#061021 0%, #071428 100%); color:#dbe7f0;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    .container{max-width:1200px;margin:28px auto;padding:20px}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4dd0e1);display:flex;align-items:center;justify-content:center;color:#04202a;font-weight:700;font-size:18px}
-    h1{margin:0;font-size:20px}
-    p.lead{margin:0;color:var(--muted);font-size:13px}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    /* cards grid */
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
-    .stat-card{grid-column:span 3;min-height:84px;display:flex;flex-direction:column;justify-content:center}
-    .stat-title{font-size:12px;color:var(--muted)}
-    .stat-value{font-size:20px;font-weight:700;margin-top:6px}
+    <meta name="description" content="Global oil & gas rig count with interactive charts, historical statistics, and monthly Baker Hughes rig data. Explore trends, regional breakdowns, and downloadable datasets.">
+    <meta property="og:title" content="World Oil & Gas Rig Count">
+    <meta property="og:description" content="Interactive global and regional rig count charts with historical data and downloadable CSV.">
+    <meta property="og:image" content="https://rig-central.com/logo_transparent.png">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://rig-central.com/">
 
-    /* charts */
-    .chart-card{grid-column:span 8;padding:18px}
-    .chart-desc{grid-column:span 8;padding:18px; text-align: justify; text-justify: inter-word;}
-    .side-card{grid-column:span 4;padding:18px}
-    .full-card{grid-column:1/-1;padding:18px}
 
-    /* controls */
-    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    select,input[type=range]{background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:inherit;padding:8px;border-radius:8px}
-    button{background:linear-gradient(90deg,var(--accent),#4dd0e1);border:none;padding:8px 12px;border-radius:8px;color:#04202a;font-weight:600;cursor:pointer}
-    .muted{color:var(--muted);font-size:13px}
-    footer{color:var(--muted);margin-top:18px;font-size:13px}
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>World Oil & Gas Rig Count</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #9aa4b2;
+            --accent: #00bcd4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --success: #16a34a;
+            --danger: #ef4444;
+        }
 
-    @media (max-width:900px){
-      .stat-card{grid-column:span 6}
-      .chart-card{grid-column:span 12}
-      .side-card{grid-column:span 12}
-    }
-  </style>
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg, #061021 0%, #071428 100%);
+            color: #dbe7f0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 28px auto;
+            padding: 20px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), #4dd0e1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #04202a;
+            font-weight: 700;
+            font-size: 18px
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* cards grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 6px 20px rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.02)
+        }
+
+        .stat-card {
+            grid-column: span 3;
+            min-height: 84px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .stat-title {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 6px
+        }
+
+        /* charts */
+        .chart-card {
+            grid-column: span 8;
+            padding: 18px
+        }
+
+        .chart-desc {
+            grid-column: span 8;
+            padding: 18px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .side-card {
+            grid-column: span 4;
+            padding: 18px
+        }
+
+        .full-card {
+            grid-column: 1/-1;
+            padding: 18px
+        }
+
+        /* controls */
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        select,
+        input[type=range] {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: inherit;
+            padding: 8px;
+            border-radius: 8px
+        }
+
+        button {
+            background: linear-gradient(90deg, var(--accent), #4dd0e1);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #04202a;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        footer {
+            color: var(--muted);
+            margin-top: 18px;
+            font-size: 13px
+        }
+
+        @media (max-width:900px) {
+            .stat-card {
+                grid-column: span 6
+            }
+
+            .chart-card {
+                grid-column: span 12
+            }
+
+            .side-card {
+                grid-column: span 12
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <!--<div class="logo">OG</div>-->
-      <div class="logo">
-        <img src="logo2_bis.png" alt="OG" width="60" height="60">
-      </div>
-      <div>
-        <h1>World Oil &amp; Gas Rig Count</h1>
-        <p class="lead">Rigs are specialized structures that drill wells to access underground hydrocarbons, enabling exploration and production through powerful equipment, skilled crews, and advanced drilling technology.</p>
-      </div>
-    </header>
-
-    <section class="grid" style="margin-bottom:12px">
-
-      <div class="card stat-card">
-        <div class="stat-title">Active Rigs</div>
-        <div id="activeRigs" class="stat-value">—</div>
-        <div class="muted">Operational rigs this month</div>
-      </div>
-
-      <div class="card stat-card">
-        <div class="stat-title">Evolution</div>
-        <div id="activeRigs_YoY" class="stat-value">—</div>
-        <div class="muted">Year-to-date</div>
-      </div>
-
-      <div class="card stat-card">
-        <div class="stat-title">Active Rigs in North America (🇺🇸,🇨🇦)</div>
-        <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
-        <div class="muted">Operational rigs this month</div>
-      </div>
-
-      <div class="card stat-card">
-        <div class="stat-title">North America Share</div>
-        <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
-        <div class="muted">of world total</div>
-      </div>
-    </section>
-
-    <section class="grid" style="align-items:start">
-      
-        <div style="grid-column:span 8">
-        <div class="card chart-desc">
-            <div>
-                The global active rig count shows a clear cyclical pattern over the past decade, with a strong recovery from the 2020 collapse followed by a gradual slowdown starting in mid-2023. After peaking near 1,900 rigs in early 2023, activity has steadily softened as investment and drilling momentum cooled across several regions. Throughout 2024 and into 2025, the numbers continue drifting downward, reflecting a more cautious operating environment and uneven demand signals. The most recent data point — 1,619 rigs in July 2025 — reinforces this trend, marking a continued step back from the highs of the post-pandemic rebound. While far above the 2020 lows, the latest figure suggests that the industry is settling into a slower expansion phase, with operators prioritizing efficiency and capital discipline over aggressive rig deployment.
-            
-                <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
+    <div class="container">
+        <header>
+            <!--<div class="logo">OG</div>-->
+            <div class="logo">
+                <img src="logo2_bis.png" alt="OG" width="60" height="60">
             </div>
-        
-        </div>
+            <div>
+                <h1>World Oil &amp; Gas Rig Count</h1>
+                <p class="lead">Rigs are specialized structures that drill wells to access underground hydrocarbons,
+                    enabling exploration and production through powerful equipment, skilled crews, and advanced drilling
+                    technology.</p>
+            </div>
+        </header>
 
-      <div class="card chart-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div>
-            <strong>World active rig (Monthly)</strong>
-            <div class="muted">Baker Hughes Rig Count Overview</div>
-          </div>
-          <div class="controls">
-            <button id="exportCsv">Export CSV</button>
-          </div>
-        </div>
-        <div style="margin-bottom:6px" class="controls">
-            <button id="filter1Y" class="button">1Y</button>
-            <button id="filter5Y" class="button">5Y</button>
-            <button id="filter10Y" class="button">10Y</button>
-            <button id="filter25Y" class="button">25Y</button>
-            <button id="filterAll" class="button">∞</button>
-          </div>
-        <div>
-            <canvas id="rigChart" height="350"></canvas>
-        </div>
-      </div>
-      </div>
+        <section class="grid" style="margin-bottom:12px">
 
-      <!--
+            <div class="card stat-card">
+                <div class="stat-title">Active Rigs</div>
+                <div id="activeRigs" class="stat-value">—</div>
+                <div class="muted">Operational rigs this month</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">Evolution</div>
+                <div id="activeRigs_YoY" class="stat-value">—</div>
+                <div class="muted">Year-to-date</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">Active Rigs in North America (🇺🇸,🇨🇦)</div>
+                <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
+                <div class="muted">Operational rigs this month</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">North America Share</div>
+                <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
+                <div class="muted">of world total</div>
+            </div>
+        </section>
+
+        <section class="grid" style="align-items:start">
+
+            <div style="grid-column:span 8">
+                <div class="card chart-desc">
+                    <div>
+                        The global active rig count shows a clear cyclical pattern over the past decade, with a strong
+                        recovery from the 2020 collapse followed by a gradual slowdown starting in mid-2023. After
+                        peaking near 1,900 rigs in early 2023, activity has steadily softened as investment and drilling
+                        momentum cooled across several regions. Throughout 2024 and into 2025, the numbers continue
+                        drifting downward, reflecting a more cautious operating environment and uneven demand signals.
+                        The most recent data point — 1,619 rigs in July 2025 — reinforces this trend, marking a
+                        continued step back from the highs of the post-pandemic rebound. While far above the 2020 lows,
+                        the latest figure suggests that the industry is settling into a slower expansion phase, with
+                        operators prioritizing efficiency and capital discipline over aggressive rig deployment.
+
+                        <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
+                    </div>
+
+                </div>
+
+                <div class="card chart-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <div>
+                            <strong>World active rig (Monthly)</strong>
+                            <div class="muted">Baker Hughes Rig Count Overview</div>
+                        </div>
+                        <div class="controls">
+                            <button id="exportCsv">Export CSV</button>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:6px" class="controls">
+                        <button id="filter1Y" class="button">1Y</button>
+                        <button id="filter5Y" class="button">5Y</button>
+                        <button id="filter10Y" class="button">10Y</button>
+                        <button id="filter25Y" class="button">25Y</button>
+                        <button id="filterAll" class="button">∞</button>
+                    </div>
+                    <div>
+                        <canvas id="rigChart" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!--
       <div class="card side-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <div>
@@ -158,27 +310,46 @@
       </div>
        -->
 
-      <div class="card full-card">
-        <strong>Data Table</strong>
-        <div class="muted" style="margin:8px 0 12px">Monthly sample dataset used for charts. Use the Export CSV button to download.</div>
-        <div style="overflow:auto;max-height:220px;border-radius:8px;padding:6px;background:rgba(255,255,255,0.01)">
-          <table id="dataTable" style="width:100%;border-collapse:collapse;font-size:13px">
-            <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
-              <tr>
-                <th style="text-align:left;padding:8px">Date</th>
-                <th style="text-align:right;padding:8px">World active rigs</th>
-                <th style="text-align:right;padding:8px">YoY (%)</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+            <div class="card full-card">
+                <strong>Data Table</strong>
+                <div class="muted" style="margin:8px 0 12px">Monthly sample dataset used for charts. Use the Export CSV
+                    button to download.</div>
+                <div
+                    style="overflow:auto;max-height:220px;border-radius:8px;padding:6px;background:rgba(255,255,255,0.01)">
+                    <table id="dataTable" style="width:100%;border-collapse:collapse;font-size:13px">
+                        <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
+                            <tr>
+                                <th style="text-align:left;padding:8px">Date</th>
+                                <th style="text-align:right;padding:8px">World active rigs</th>
+                                <th style="text-align:right;padding:8px">YoY (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-    <footer> © 2025 rig-central.com • Contact: <code> hello@rig-central.com </code> </footer>
-  </div>
-<script id="dataset" type="application/json">{
+        <footer> © 2025 rig-central.com • Contact: <code> hello@rig-central.com </code> </footer>
+    </div>
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "World Oil & Gas Rig Count",
+        "description": "Monthly global and regional rig count from Baker Hughes.",
+        "creator": {
+            "@type": "Organization",
+            "name": "Rig Central",
+            "url": "https://rig-central.com/"
+        },
+        "isAccessibleForFree" : true,
+        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs"],
+        "url": "https://rig-central.com/"
+        }
+    </script>
+
+    <script id="dataset" type="application/json">{
  "header":["DateTime", "YoY_what=rig_count", "what=rig_count", "what=rig_count.region=africa", "what=rig_count.region=asia_pacific", "what=rig_count.region=europe", "what=rig_count.region=latin_america", "what=rig_count.region=middle_east", "what=rig_count.region=north_america"],
  "data":[
 ["1975-01-31", null, 2694.0, 117.0, 211.0, 102.0, 327.0, 160.0, 1777.0],
@@ -794,171 +965,175 @@
 }
 </script>
 
-  <script>
-   
-    var dataset = JSON.parse(document.getElementById('dataset').textContent);
+    <script>
 
-    var header_idx = {}
-    dataset.header.forEach((value, index) => {
-        header_idx[value] = index
-    });
-   
+        var dataset = JSON.parse(document.getElementById('dataset').textContent);
 
-   
-    // DOM references for stats
-    const activeRigsEl = document.getElementById('activeRigs');
-    const activeRigsEvolEl = document.getElementById('activeRigs_YoY');
+        var header_idx = {}
+        dataset.header.forEach((value, index) => {
+            header_idx[value] = index
+        });
 
-    const avgPriceNorthAmericaEl = document.getElementById('activeRigs_NorthAmerica');
-    const avgPriceNorthAmericaShareEl = document.getElementById('activeRigs_NorthAmerica_share');
 
-    // table body
-    const tableBody = document.getElementById('tableBody');
 
-    // Helper to compute aggregates for a given year
-    function aggregatesForYear(from_date, to_date){
-      const rows = dataset.data.filter(r => {
-        date = new Date(r[header_idx['DateTime']]);
-        return date >= from_date && date < to_date;
-    });
-      const rigs = rows.length ? rows[rows.length-1][header_idx['what=rig_count']] : 0; // last month rigs
-      const rigsEvol = rows.length ? rows[rows.length-1][header_idx['YoY_what=rig_count']] : 0; // last month rigs
+        // DOM references for stats
+        const activeRigsEl = document.getElementById('activeRigs');
+        const activeRigsEvolEl = document.getElementById('activeRigs_YoY');
 
-      const rigsNorthAmerica = rows.length ? rows[rows.length-1][header_idx['what=rig_count.region=north_america']] : 0;
-      const rigsNorthAmericaShare = rigsNorthAmerica / rigs * 100;
+        const avgPriceNorthAmericaEl = document.getElementById('activeRigs_NorthAmerica');
+        const avgPriceNorthAmericaShareEl = document.getElementById('activeRigs_NorthAmerica_share');
 
-      return {rows, rigs, rigsEvol, rigsNorthAmerica, rigsNorthAmericaShare};
-    }
+        // table body
+        const tableBody = document.getElementById('tableBody');
 
-    // ---------- CHARTS ----------
-    const rigCtx = document.getElementById('rigChart');
+        // Helper to compute aggregates for a given year
+        function aggregatesForYear(from_date, to_date) {
+            const rows = dataset.data.filter(r => {
+                date = new Date(r[header_idx['DateTime']]);
+                return date >= from_date && date < to_date;
+            });
+            const rigs = rows.length ? rows[rows.length - 1][header_idx['what=rig_count']] : 0; // last month rigs
+            const rigsEvol = rows.length ? rows[rows.length - 1][header_idx['YoY_what=rig_count']] : 0; // last month rigs
 
-    const rigChart = new Chart(rigCtx, {
-      type: 'bar',
-      data: {labels: [], datasets: []},
-      options: {
-        responsive:true, 
-        maintainAspectRatio:false,
-        scales:{
-          y:{beginAtZero:true}
-        },
-        plugins:{legend:{display:true}}
-      }
-    });
+            const rigsNorthAmerica = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.region=north_america']] : 0;
+            const rigsNorthAmericaShare = rigsNorthAmerica / rigs * 100;
 
-    
+            return { rows, rigs, rigsEvol, rigsNorthAmerica, rigsNorthAmericaShare };
+        }
 
-    function renderYear(from_date, to_date){
-      const agg = aggregatesForYear(from_date, to_date);
+        // ---------- CHARTS ----------
+        const rigCtx = document.getElementById('rigChart');
 
-      activeRigsEl.textContent = agg.rigs.toFixed(0);
-      activeRigsEvolEl.textContent = agg.rigsEvol.toFixed(2) + ' %';
-      avgPriceNorthAmericaEl.textContent = agg.rigsNorthAmerica.toFixed(0);
-      avgPriceNorthAmericaShareEl.textContent = agg.rigsNorthAmericaShare.toFixed(1) + ' %';
+        const rigChart = new Chart(rigCtx, {
+            type: 'bar',
+            data: { labels: [], datasets: [] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: { legend: { display: true } }
+            }
+        });
 
-      // Table
-      tableBody.innerHTML = '';
-      const reverseRows = [...agg.rows].reverse();
-      reverseRows.forEach(r => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+
+
+        function renderYear(from_date, to_date) {
+            const agg = aggregatesForYear(from_date, to_date);
+
+            activeRigsEl.textContent = agg.rigs.toFixed(0);
+            activeRigsEvolEl.textContent = agg.rigsEvol.toFixed(2) + ' %';
+            avgPriceNorthAmericaEl.textContent = agg.rigsNorthAmerica.toFixed(0);
+            avgPriceNorthAmericaShareEl.textContent = agg.rigsNorthAmericaShare.toFixed(1) + ' %';
+
+            // Table
+            tableBody.innerHTML = '';
+            const reverseRows = [...agg.rows].reverse();
+            reverseRows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
           <td style="padding:8px">${r[header_idx['DateTime']]}</td>
           <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count']].toFixed(0)}</td>
           <td style="padding:8px;text-align:right">${r[header_idx['YoY_what=rig_count']].toFixed(2)}</td>
         `;
-        tableBody.appendChild(tr);
-      });
+                tableBody.appendChild(tr);
+            });
 
-      // Production/Price chart: dual axes
-      const labels = agg.rows.map(r=>r[header_idx['DateTime']]);
-      const rigData = agg.rows.map(r=>r[header_idx['what=rig_count']]);
+            // Production/Price chart: dual axes
+            const labels = agg.rows.map(r => r[header_idx['DateTime']]);
+            const rigData = agg.rows.map(r => r[header_idx['what=rig_count']]);
 
-      rigChart.data.labels = labels;
-      rigChart.data.datasets = [
-        {type:'line',label:'World active rigs',yAxisID:'y', data:rigData, tension:0.10, pointRadius:1, borderWidth:2, backgroundColor:'rgba(77,208,225,0.18)',borderColor:'rgba(77,208,225,0.9)'}
-      ];
-      rigChart.options = {
-        responsive:true,
-        maintainAspectRatio:false,
-        scales:{
-          y:{position:'left',title:{display:true,text:'Unit'},beginAtZero:false}
+            rigChart.data.labels = labels;
+            rigChart.data.datasets = [
+                { type: 'line', label: 'World active rigs', yAxisID: 'y', data: rigData, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(77,208,225,0.18)', borderColor: 'rgba(77,208,225,0.9)' }
+            ];
+            rigChart.options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { position: 'left', title: { display: true, text: 'Unit' }, beginAtZero: false }
+                }
+            };
+            rigChart.update();
+
         }
-      };
-      rigChart.update();
-
-    }
 
 
-
-    to_date = new Date();
-    from_date = new Date();
-    from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 10 ));
-    
-
-    // initial render
-    renderYear(from_date, to_date);
-
-
-    document.getElementById('filter1Y').addEventListener('click',()=>{
 
         to_date = new Date();
         from_date = new Date();
-        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 1 ));
+        from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 10));
 
+
+        // initial render
         renderYear(from_date, to_date);
-    });
-    document.getElementById('filter5Y').addEventListener('click',()=>{
-
-        to_date = new Date();
-        from_date = new Date();
-        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 5 ));
-
-        renderYear(from_date, to_date);
-    });
-    document.getElementById('filter10Y').addEventListener('click',()=>{
-
-        to_date = new Date();
-        from_date = new Date();
-        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 10 ));
-
-        renderYear(from_date, to_date);
-    });
-    document.getElementById('filter25Y').addEventListener('click',()=>{
-
-        to_date = new Date();
-        from_date = new Date();
-        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 25 ));
-
-        renderYear(from_date, to_date);
-    });
-    document.getElementById('filterAll').addEventListener('click',()=>{
-
-        to_date = new Date();
-        from_date = new Date();
-        from_date = new Date(from_date.setFullYear( from_date.getFullYear() - 100 ));
-
-        renderYear(from_date, to_date);
-    });
 
 
-    // CSV export
-    function toCsv(rows){
-      const header = ['DateTime','RigCount','RigCount.YoY'];
-      const lines = [header.join(',')];
-      rows.forEach(r => lines.push([r[header_idx['DateTime']],r[header_idx['what=rig_count']],r[header_idx['YoY_what=rig_count']]].join(',')));
-      return lines.join('\n');
-    }
+        document.getElementById('filter1Y').addEventListener('click', () => {
 
-    document.getElementById('exportCsv').addEventListener('click',()=>{
-      const agg = aggregatesForYear(from_date, to_date);
-      const csv = toCsv(agg.rows);
-      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `rig_count.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    }); 
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 1));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter5Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 5));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter10Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 10));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter25Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 25));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filterAll').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 100));
+
+            renderYear(from_date, to_date);
+        });
+
+
+        // CSV export
+        function toCsv(rows) {
+            const header = ['DateTime', 'RigCount', 'RigCount.YoY'];
+            const lines = [header.join(',')];
+            rows.forEach(r => lines.push([r[header_idx['DateTime']], r[header_idx['what=rig_count']], r[header_idx['YoY_what=rig_count']]].join(',')));
+            return lines.join('\n');
+        }
+
+        document.getElementById('exportCsv').addEventListener('click', () => {
+
+            gtag('event', 'button_click', {page: 'index', id: 'exportCsv'});
+
+            const agg = aggregatesForYear(from_date, to_date);
+            const csv = toCsv(agg.rows);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `rig_count.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
 
 
 
-  </script>
+    </script>
 </body>
+
 </html>
