@@ -102,8 +102,8 @@
             <div style="grid-column:span 8">
                 <div class="card chart-desc">
                     <div>
-                        The most recent regional rig count data reveals a mixed performance across global markets, highlighting shifting momentum as of October 2025. North America shows the strongest upswing, reaching 741 rigs, continuing its steady multi-month climb and reinforcing its position as the primary driver of global activity. The Middle East remains highly stable at 505 rigs, sustaining its role as a baseline of reliability even amid moderate monthly fluctuations. In contrast, Africa declines to 97 rigs, returning to levels last seen earlier in the year. Latin America also trends downward, easing to 129 rigs after previously holding near the mid-140s. Asia/Pacific and Europe soften slightly, finishing at 204 and 124 rigs, respectively. Overall, the latest values indicate resilience in key regions despite selective weakening elsewhere.
-
+                        Land rigs start strong at 1,621.8 in January and peak at 1,663.5 in February before declining through spring to about 1,500.6 in May. Offshore rigs show a steadier pattern, gradually easing from 259.8 to around 245–258 across the year, reflecting stable but slightly reduced marine operations. Inland waters remain the smallest segment, fluctuating narrowly between 8 and 12.25 rigs, with a notable mid-year rise in July. Entering late 2025, land activity stabilizes near the mid-1,540s, while offshore rigs dip more sharply in October. The final values—1,545.6 land rigs, 244.2 offshore rigs, and 10.6 inland-water rigs—highlight a steady land recovery but a marked offshore slowdown heading into year-end.
+                        
                         <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
                     </div>
 
@@ -369,7 +369,7 @@
 
         // CSV export
         function toCsv(rows) {
-            const header = ['DateTime', 'Oil', 'Gas', 'Misc'];
+            const header = ['DateTime', 'Land', 'Offshore', 'InlandWaters'];
             const lines = [header.join(',')];
             rows.forEach(r => lines.push([
                 r[header_idx['DateTime']], 
