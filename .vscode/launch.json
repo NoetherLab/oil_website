@@ -10,6 +10,12 @@
             "request": "launch",
             "name": "Open index.html",
             "file": "${workspaceFolder}/index.html"
+        },
+          {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open ByRegion",
+            "file": "${workspaceFolder}/rig_count_by_region.html"
         }
     ]
 }

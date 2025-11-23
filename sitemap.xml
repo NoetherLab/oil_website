@@ -7,4 +7,10 @@
     <priority>1.0</priority>
   </url>
 
+    <url>
+    <loc>https://rig-central.com/rig_count_by_region.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
 </urlset>
