@@ -61,14 +61,14 @@
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Active Rigs in North America (🇺🇸,🇨🇦)</div>
-                <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
-                <div class="muted">Operational rigs this month</div>
+                <div class="stat-title">Rigs drilled for oil</div>
+                <div id="activeRigs_OilShare" class="stat-value">—</div>
+                <div class="muted">of world total</div>
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">North America Share</div>
-                <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
+                <div class="stat-title">Rigs drilled for gas</div>
+                <div id="activeRigs_GasShare" class="stat-value">—</div>
                 <div class="muted">of world total</div>
             </div>
         </section>
@@ -112,7 +112,7 @@
                 <div class="card chart-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                         <div>
-                            <strong>Active rig by world region(Monthly)</strong>
+                            <strong>Oil rigs vs. gas rigs (Monthly)</strong>
                             <div class="muted">Baker Hughes Rig Count Overview</div>
                         </div>
                         <div class="controls">
@@ -165,12 +165,9 @@
                         <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
                             <tr>
                                 <th style="text-align:left;padding:8px">Date</th>
-                                <th style="text-align:right;padding:8px">Africa</th>
-                                <th style="text-align:right;padding:8px">Asia/Pacific</th>
-                                <th style="text-align:right;padding:8px">Europe</th>
-                                <th style="text-align:right;padding:8px">Latin America</th>
-                                <th style="text-align:right;padding:8px">Middle East</th>
-                                <th style="text-align:right;padding:8px">North America</th>
+                                <th style="text-align:right;padding:8px">Oil</th>
+                                <th style="text-align:right;padding:8px">Gas</th>
+                                <th style="text-align:right;padding:8px">Misc</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -201,7 +198,7 @@
 
     <script>
 
-        var dataset = data_by_region;
+        var dataset = data_by_drillfor;
 
         var header_idx = {}
         dataset.header.forEach((value, index) => {
@@ -214,11 +211,14 @@
         const activeRigsEl = document.getElementById('activeRigs');
         const activeRigsEvolEl = document.getElementById('activeRigs_YoY');
 
-        const avgPriceNorthAmericaEl = document.getElementById('activeRigs_NorthAmerica');
-        const avgPriceNorthAmericaShareEl = document.getElementById('activeRigs_NorthAmerica_share');
+        const activeRigs_OilShareEl = document.getElementById('activeRigs_OilShare');
+        const activeRigs_GasShareEl = document.getElementById('activeRigs_GasShare');
 
         // table body
         const tableBody = document.getElementById('tableBody');
+
+
+
 
         // Helper to compute aggregates for a given year
         function aggregatesForYear(from_date, to_date) {
@@ -232,10 +232,13 @@
             const rigs = rows.length ? rows[rows.length - 1][header_idx['what=rig_count']] : 0; // last month rigs
             const rigsEvol = rows.length ? rows[rows.length - 1][header_idx['YoY_what=rig_count']] : 0; // last month rigs
 
-            const rigsNorthAmerica = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.region=north_america']] : 0;
-            const rigsNorthAmericaShare = rigsNorthAmerica / rigs * 100;
+            const rigsGas = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.drill_for=gas']] : 0;
+            const rigsGasShare = rigsGas / rigs * 100;
 
-            return { rows, rigs, rigsEvol, rigsNorthAmerica, rigsNorthAmericaShare };
+            const rigsOil = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.drill_for=oil']] : 0;
+            const rigsOilShare =rigsOil / rigs * 100;
+
+            return { rows, rigs, rigsEvol, rigsGas, rigsGasShare, rigsOil, rigsOilShare  };
         }
 
         // ---------- CHARTS ----------
@@ -261,8 +264,8 @@
 
             activeRigsEl.textContent = agg.rigs.toFixed(0);
             activeRigsEvolEl.textContent = agg.rigsEvol.toFixed(2) + ' %';
-            avgPriceNorthAmericaEl.textContent = agg.rigsNorthAmerica.toFixed(0);
-            avgPriceNorthAmericaShareEl.textContent = agg.rigsNorthAmericaShare.toFixed(1) + ' %';
+            activeRigs_OilShareEl.textContent = agg.rigsOilShare.toFixed(2) + ' %';
+            activeRigs_GasShareEl.textContent = agg.rigsGasShare.toFixed(2) + ' %';
 
 
             // Table
@@ -272,41 +275,33 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
             <td style="padding:8px">${r[header_idx['DateTime']]}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=africa']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=asia_pacific']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=europe']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=latin_america']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=middle_east']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.region=north_america']].toFixed(0)}</td>
-
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=oil']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=gas']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=miscellaneous']].toFixed(0)}</td>
         `;
                 tableBody.appendChild(tr);
             });
 
 
+
             const labels = agg.rows.map(r => r[header_idx['DateTime']]);
-            const rigData_africa = agg.rows.map(r => r[header_idx['what=rig_count.region=africa']]);
-            const rigData_asia_pacific = agg.rows.map(r => r[header_idx['what=rig_count.region=asia_pacific']]);
-            const rigData_europe = agg.rows.map(r => r[header_idx['what=rig_count.region=europe']]);
-            const rigData_latin_america = agg.rows.map(r => r[header_idx['what=rig_count.region=latin_america']]);
-            const rigData_middle_east = agg.rows.map(r => r[header_idx['what=rig_count.region=middle_east']]);
-            const rigData_north_america = agg.rows.map(r => r[header_idx['what=rig_count.region=north_america']]);
+            const rigData_oil = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=oil']]);
+            const rigData_gas = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=gas']]);
+            const rigData_misc = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=miscellaneous']]);
+  
             //#7ED6F6, #797DF6, #4BDEDE, #1BA7EC, #1F3097
 
             rigChart.data.labels = labels;
             rigChart.data.datasets = [
-                { type: 'line', label: 'Africa', yAxisID: 'y', data: rigData_africa, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                { type: 'line', label: 'Gas', yAxisID: 'y', data: rigData_gas, tension: 0.10, pointRadius: 1, borderWidth: 2, 
                     backgroundColor: 'rgba(126, 214, 246,0.18)', borderColor: 'rgba(126, 214, 246,0.9)' },
-                { type: 'line', label: 'Asia/Pacific', yAxisID: 'y', data: rigData_asia_pacific, tension: 0.10, pointRadius: 1, borderWidth: 2, 
-                    backgroundColor: 'rgba(121, 125, 246,0.18)', borderColor: 'rgba(121, 125, 246,0.9)' },
-                { type: 'line', label: 'Europe', yAxisID: 'y', data: rigData_europe, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+
+                { type: 'line', label: 'Oil', yAxisID: 'y', data: rigData_oil, tension: 0.10, pointRadius: 1, borderWidth: 2, 
                     backgroundColor: 'rgba(75, 222, 222,0.18)', borderColor: 'rgba(75, 222, 222,0.9)' },
-                { type: 'line', label: 'Latin America', yAxisID: 'y', data: rigData_latin_america, tension: 0.10, pointRadius: 1, borderWidth: 2, 
-                    backgroundColor: 'rgba(54,162,235,0.18)', borderColor: 'rgba(54,162,235,0.9)' },
-                { type: 'line', label: 'Middle-East', yAxisID: 'y', data: rigData_middle_east, tension: 0.10, pointRadius: 1, borderWidth: 2, 
-                    backgroundColor: 'rgba(27, 167, 236,0.18)', borderColor: 'rgba(27, 167, 236,0.9)' },
-                { type: 'line', label: 'North America', yAxisID: 'y', data: rigData_north_america, tension: 0.10, pointRadius: 1, borderWidth: 2,
-                    backgroundColor: 'rgba(31, 48, 151,0.18)', borderColor: 'rgba(31, 48, 151,0.9)'}
+
+                { type: 'line', label: 'Misc', yAxisID: 'y', data: rigData_misc, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(27, 167, 236,0.18)', borderColor: 'rgba(27, 167, 236,0.9)' }
+
             ];
             rigChart.options = {
                 responsive: true,
@@ -372,20 +367,17 @@
         });
 
 
-  
+
 
         // CSV export
         function toCsv(rows) {
-            const header = ['DateTime', 'Africa', 'Asia/Pacific', 'Europe', 'Latin America', 'Middle-East', 'North America'];
+            const header = ['DateTime', 'Oil', 'Gas', 'Misc'];
             const lines = [header.join(',')];
             rows.forEach(r => lines.push([
                 r[header_idx['DateTime']], 
-                r[header_idx['what=rig_count.region=africa']], 
-                r[header_idx['what=rig_count.region=asia_pacific']], 
-                r[header_idx['what=rig_count.region=europe']], 
-                r[header_idx['what=rig_count.region=latin_america']], 
-                r[header_idx['what=rig_count.region=middle_east']], 
-                r[header_idx['what=rig_count.region=north_america']],
+                r[header_idx['what=rig_count.drill_for=oil']], 
+                r[header_idx['what=rig_count.drill_for=gas']], 
+                r[header_idx['what=rig_count.drill_for=miscellaneous']]
         ].join(',')));
             return lines.join('\n');
         }
@@ -398,7 +390,7 @@
             const csv = toCsv(agg.rows);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `rig_count_by_region.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            const a = document.createElement('a'); a.href = url; a.download = `rig_count_oil_vs_gas.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         });
 
 

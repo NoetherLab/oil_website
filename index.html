@@ -89,6 +89,8 @@
                         <div class="dropdown-content">
                             <a href="index.html">World</a>
                             <a href="rig_count_by_region.html">By region</a>
+                            <a href="rig_count_oil_vs_gas.html">Oil vs. Gas rigs</a>
+                            <a href="rig_count_offshore.html">Offshore</a>
                         </div>
                         </li>
                         <!--     <li><a href="#">About</a></li> -->
@@ -226,7 +228,10 @@
         function aggregatesForYear(from_date, to_date) {
             const rows = dataset.data.filter(r => {
                 date = new Date(r[header_idx['DateTime']]);
-                return date >= from_date && date < to_date;
+                date_condition = date >= from_date && date < to_date;
+
+                value_condition = r[header_idx['YoY_what=rig_count']] != null
+                return date_condition && value_condition;
             });
             const rigs = rows.length ? rows[rows.length - 1][header_idx['what=rig_count']] : 0; // last month rigs
             const rigsEvol = rows.length ? rows[rows.length - 1][header_idx['YoY_what=rig_count']] : 0; // last month rigs
