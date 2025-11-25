@@ -22,7 +22,7 @@
 
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>World Oil & Gas Rig Count</title>
+    <title>World Offshore Rig Count</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -103,7 +103,7 @@
                 <div class="card chart-desc">
                     <div>
                         Land rigs start strong at 1,621.8 in January and peak at 1,663.5 in February before declining through spring to about 1,500.6 in May. Offshore rigs show a steadier pattern, gradually easing from 259.8 to around 245–258 across the year, reflecting stable but slightly reduced marine operations. Inland waters remain the smallest segment, fluctuating narrowly between 8 and 12.25 rigs, with a notable mid-year rise in July. Entering late 2025, land activity stabilizes near the mid-1,540s, while offshore rigs dip more sharply in October. The final values—1,545.6 land rigs, 244.2 offshore rigs, and 10.6 inland-water rigs—highlight a steady land recovery but a marked offshore slowdown heading into year-end.
-                        
+
                         <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
                     </div>
 
@@ -190,8 +190,15 @@
             "url": "https://rig-central.com/"
         },
         "isAccessibleForFree" : true,
-        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs"],
-        "url": "https://rig-central.com/"
+        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs", "offshore rigs"],
+        "url": "https://rig-central.com/",
+        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
+        "distribution":[
+         {
+            "@type":"DataDownload",
+            "encodingFormat":"CSV",
+            "contentUrl":"https://rig-central.com/rig_count_offshore.html"
+         }]
         }
     </script>
 

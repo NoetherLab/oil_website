@@ -22,7 +22,7 @@
 
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>World Oil & Gas Rig Count</title>
+    <title>World Oil & Gas Rig Count By region</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -185,16 +185,23 @@
         {
         "@context": "https://schema.org",
         "@type": "Dataset",
-        "name": "World Oil & Gas Rig Count",
+        "name": "World Oil & Gas Rig Count by world region",
         "description": "Monthly global and regional rig count from Baker Hughes.",
+        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
         "creator": {
             "@type": "Organization",
             "name": "Rig Central",
             "url": "https://rig-central.com/"
         },
         "isAccessibleForFree" : true,
-        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs"],
-        "url": "https://rig-central.com/"
+        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs", "rig count by region"],
+        "url": "https://rig-central.com/",
+        "distribution":[
+         {
+            "@type":"DataDownload",
+            "encodingFormat":"CSV",
+            "contentUrl":"https://rig-central.com/rig_count_by_region.html"
+         }]
         }
     </script>
 
