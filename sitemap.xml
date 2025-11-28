@@ -8,19 +8,19 @@
   </url>
 
   <url>
-    <loc>https://rig-central.com/rig_count_by_region.html</loc>
+    <loc>https://rig-central.com/rig_count_by_region</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://rig-central.com/rig_count_oil_vs_gas.html</loc>
+    <loc>https://rig-central.com/rig_count_oil_vs_gas</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://rig-central.com/rig_count_offshore.html</loc>
+    <loc>https://rig-central.com/rig_count_offshore</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
