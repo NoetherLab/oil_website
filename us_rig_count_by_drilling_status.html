@@ -22,7 +22,7 @@
 
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>World Oil vs. Gas Rig Count</title>
+    <title>World Oil & Gas Rig Count By region</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -49,7 +49,7 @@
         <section class="grid" style="margin-bottom:12px">
 
             <div class="card stat-card">
-                <div class="stat-title">Active Rigs</div>
+                <div class="stat-title">Active US Rigs</div>
                 <div id="activeRigs" class="stat-value">—</div>
                 <div class="muted">Operational rigs this month</div>
             </div>
@@ -61,15 +61,15 @@
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Rigs drilled for oil</div>
-                <div id="activeRigs_OilShare" class="stat-value">—</div>
-                <div class="muted">of world total</div>
+                <div class="stat-title">Drilled but Uncompleted well</div>
+                <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
+                <div class="muted">Operational rigs this month</div>
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Rigs drilled for gas</div>
-                <div id="activeRigs_GasShare" class="stat-value">—</div>
-                <div class="muted">of world total</div>
+                <div class="stat-title">Uncompleted Share</div>
+                <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
+                <div class="muted">of US total</div>
             </div>
         </section>
 
@@ -108,9 +108,9 @@
             <div style="grid-column:span 8">
                 <div class="card chart-desc">
                     <div>
-                        Oil rig activity begins strong at 1,377 units in January and peaks at 1,413.25 in February before trending downward through late spring, reaching a low of 1,269.2 in May. Gas rigs follow a similar pattern, easing from 460.2 to around 439–449 during mid-year before recovering slightly. Miscellaneous rigs fluctuate modestly, with noticeable growth from 49.2 in May to over 60 in July. Toward the final months, activity stabilizes: oil rigs level near 1,286–1,292, gas rigs hover around 457–461, and miscellaneous rigs settle near the upper-50s. The last recorded values—1,286.2 oil rigs, 457 gas rigs, and 57.20 misc rigs—suggest a relatively balanced, steady drilling environment entering year-end.
+                        The most recent regional rig count data reveals a mixed performance across global markets, highlighting shifting momentum as of October 2025. North America shows the strongest upswing, reaching 741 rigs, continuing its steady multi-month climb and reinforcing its position as the primary driver of global activity. The Middle East remains highly stable at 505 rigs, sustaining its role as a baseline of reliability even amid moderate monthly fluctuations. In contrast, Africa declines to 97 rigs, returning to levels last seen earlier in the year. Latin America also trends downward, easing to 129 rigs after previously holding near the mid-140s. Asia/Pacific and Europe soften slightly, finishing at 204 and 124 rigs, respectively. Overall, the latest values indicate resilience in key regions despite selective weakening elsewhere.
 
-                        <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
+                        <i>Source: <a class="muted" href="https://www.eia.gov/petroleum/drilling/">EIA</a></i>
                     </div>
 
                 </div>
@@ -118,8 +118,8 @@
                 <div class="card chart-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                         <div>
-                            <strong>Oil rigs vs. gas rigs (Monthly)</strong>
-                            <div class="muted">Baker Hughes Rig Count Overview</div>
+                            <strong>Drilled but Uncompleted Wells, DUC (Monthly)</strong>
+                            <div class="muted">EIA Drilling productivity report</div>
                         </div>
                         <div class="controls">
                             <button id="exportCsv">Export CSV</button>
@@ -159,6 +159,8 @@
         <canvas id="reservesChart" height="120"></canvas>
         </div>
       </div>
+
+
        -->
 
             <div class="card full-card">
@@ -171,9 +173,10 @@
                         <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
                             <tr>
                                 <th style="text-align:left;padding:8px">Date</th>
-                                <th style="text-align:right;padding:8px">Oil</th>
-                                <th style="text-align:right;padding:8px">Gas</th>
-                                <th style="text-align:right;padding:8px">Misc</th>
+                                <th style="text-align:right;padding:8px">Total</th>
+                                <th style="text-align:right;padding:8px">Completed</th>
+                                <th style="text-align:right;padding:8px">Drilled</th>
+                                <th style="text-align:right;padding:8px">Drilled but Uncompleted (DUC)</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -188,22 +191,22 @@
         {
         "@context": "https://schema.org",
         "@type": "Dataset",
-        "name": "World Oil & Gas Rig Count",
+        "name": "World Oil & Gas Rig Count by world region",
         "description": "Monthly global and regional rig count from Baker Hughes.",
+        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
         "creator": {
             "@type": "Organization",
             "name": "Rig Central",
             "url": "https://rig-central.com/"
         },
         "isAccessibleForFree" : true,
-        "keywords": ["rig count", "oil and gas", "energy data", "baker hughes", "drilling rigs" , "offshore rigs", "oil rigs", "gas rigs"],
+        "keywords": ["rig count", "oil and gas", "energy data", "eia", "drilling rigs", "DUC report", "us"],
         "url": "https://rig-central.com/",
-        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
         "distribution":[
          {
             "@type":"DataDownload",
             "encodingFormat":"CSV",
-            "contentUrl":"https://rig-central.com/rig_count_oil_vs_gas.html"
+            "contentUrl":"https://rig-central.com/us_rig_count_by_drilling_status.html"
          }]
         }
     </script>
@@ -211,7 +214,7 @@
 
     <script>
 
-        var dataset = data_by_drillfor;
+        var dataset = data_by_status_us;
 
         var header_idx = {}
         dataset.header.forEach((value, index) => {
@@ -224,14 +227,11 @@
         const activeRigsEl = document.getElementById('activeRigs');
         const activeRigsEvolEl = document.getElementById('activeRigs_YoY');
 
-        const activeRigs_OilShareEl = document.getElementById('activeRigs_OilShare');
-        const activeRigs_GasShareEl = document.getElementById('activeRigs_GasShare');
+        const avgPriceNorthAmericaEl = document.getElementById('activeRigs_NorthAmerica');
+        const avgPriceNorthAmericaShareEl = document.getElementById('activeRigs_NorthAmerica_share');
 
         // table body
         const tableBody = document.getElementById('tableBody');
-
-
-
 
         // Helper to compute aggregates for a given year
         function aggregatesForYear(from_date, to_date) {
@@ -245,13 +245,10 @@
             const rigs = rows.length ? rows[rows.length - 1][header_idx['what=rig_count']] : 0; // last month rigs
             const rigsEvol = rows.length ? rows[rows.length - 1][header_idx['YoY_what=rig_count']] : 0; // last month rigs
 
-            const rigsGas = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.drill_for=gas']] : 0;
-            const rigsGasShare = rigsGas / rigs * 100;
+            const rigsDUC = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.geo=us.status=duc']] : 0;
+            const rigsDUCShare = rigsDUC / rigs * 100;
 
-            const rigsOil = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.drill_for=oil']] : 0;
-            const rigsOilShare =rigsOil / rigs * 100;
-
-            return { rows, rigs, rigsEvol, rigsGas, rigsGasShare, rigsOil, rigsOilShare  };
+            return { rows, rigs, rigsEvol, rigsDUC, rigsDUCShare};
         }
 
         // ---------- CHARTS ----------
@@ -277,10 +274,11 @@
 
             activeRigsEl.textContent = agg.rigs.toFixed(0);
             activeRigsEvolEl.textContent = agg.rigsEvol.toFixed(2) + ' %';
-            activeRigs_OilShareEl.textContent = agg.rigsOilShare.toFixed(2) + ' %';
-            activeRigs_GasShareEl.textContent = agg.rigsGasShare.toFixed(2) + ' %';
+            avgPriceNorthAmericaEl.textContent = agg.rigsDUC.toFixed(0);
+            avgPriceNorthAmericaShareEl.textContent = agg.rigsDUCShare.toFixed(1) + ' %';
 
 
+ 
             // Table
             tableBody.innerHTML = '';
             const reverseRows = [...agg.rows].reverse();
@@ -288,9 +286,10 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
             <td style="padding:8px">${r[header_idx['DateTime']]}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=oil']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=gas']].toFixed(0)}</td>
-            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.drill_for=miscellaneous']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.geo=us.status=completed']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.geo=us.status=drilled']].toFixed(0)}</td>
+            <td style="padding:8px;text-align:right">${r[header_idx['what=rig_count.geo=us.status=duc']].toFixed(0)}</td>
         `;
                 tableBody.appendChild(tr);
             });
@@ -298,23 +297,20 @@
 
 
             const labels = agg.rows.map(r => r[header_idx['DateTime']]);
-            const rigData_oil = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=oil']]);
-            const rigData_gas = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=gas']]);
-            const rigData_misc = agg.rows.map(r => r[header_idx['what=rig_count.drill_for=miscellaneous']]);
-  
+            const rigData_completed = agg.rows.map(r => r[header_idx['what=rig_count.geo=us.status=completed']]);
+            const rigData_drilled = agg.rows.map(r => r[header_idx['what=rig_count.geo=us.status=drilled']]);
+            const rigData_duc = agg.rows.map(r => r[header_idx['what=rig_count.geo=us.status=duc']]);
+
             //#7ED6F6, #797DF6, #4BDEDE, #1BA7EC, #1F3097
 
             rigChart.data.labels = labels;
             rigChart.data.datasets = [
-                { type: 'line', label: 'Gas', yAxisID: 'y', data: rigData_gas, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                { type: 'line', label: 'Completed', yAxisID: 'y', data: rigData_completed, tension: 0.10, pointRadius: 1, borderWidth: 2, 
                     backgroundColor: 'rgba(126, 214, 246,0.18)', borderColor: 'rgba(126, 214, 246,0.9)' },
-
-                { type: 'line', label: 'Oil', yAxisID: 'y', data: rigData_oil, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                { type: 'line', label: 'Drilled', yAxisID: 'y', data: rigData_drilled, tension: 0.10, pointRadius: 1, borderWidth: 2, 
                     backgroundColor: 'rgba(75, 222, 222,0.18)', borderColor: 'rgba(75, 222, 222,0.9)' },
-
-                { type: 'line', label: 'Misc', yAxisID: 'y', data: rigData_misc, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                { type: 'line', label: 'DUC', yAxisID: 'y', data: rigData_duc, tension: 0.10, pointRadius: 1, borderWidth: 2, 
                     backgroundColor: 'rgba(27, 167, 236,0.18)', borderColor: 'rgba(27, 167, 236,0.9)' }
-
             ];
             rigChart.options = {
                 responsive: true,
@@ -381,16 +377,16 @@
 
 
 
-
         // CSV export
         function toCsv(rows) {
-            const header = ['DateTime', 'Oil', 'Gas', 'Misc'];
+            const header = ['DateTime', 'Total', 'Completed', 'Drilled', 'DUC'];
             const lines = [header.join(',')];
             rows.forEach(r => lines.push([
                 r[header_idx['DateTime']], 
-                r[header_idx['what=rig_count.drill_for=oil']], 
-                r[header_idx['what=rig_count.drill_for=gas']], 
-                r[header_idx['what=rig_count.drill_for=miscellaneous']]
+                r[header_idx['what=rig_count']], 
+                r[header_idx['what=rig_count.geo=us.status=completed']], 
+                r[header_idx['what=rig_count.geo=us.status=drilled']], 
+                r[header_idx['what=rig_count.geo=us.status=duc']],
         ].join(',')));
             return lines.join('\n');
         }
@@ -403,7 +399,7 @@
             const csv = toCsv(agg.rows);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `rig_count_oil_vs_gas.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            const a = document.createElement('a'); a.href = url; a.download = `us_rig_count_by_drilling_status.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         });
 
 
