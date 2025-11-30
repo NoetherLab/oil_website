@@ -70,7 +70,7 @@
             <div class="card stat-card">
                 <div class="stat-title">WTI Price in Gold</div>
                 <div id="wti_brent_spread_rel" class="stat-value">—</div>
-                <div class="muted">Once of gold</div>
+                <div class="muted">Gram of gold</div>
             </div>
         </section>
 
@@ -113,14 +113,12 @@
             <div style="grid-column:span 8">
                 <div class="card chart-desc">
                     <div>
-                        Between December 2020 and November 2022, the dataset reveals significant movements in WTI crude oil prices relative to gold, 
-                        illustrating the evolving dynamics of commodities during a period marked by economic recovery, geopolitical tensions, and inflationary pressures. 
-                        WTI prices rose steadily from mid-$40s in late 2020 to peaks above $120 in mid-2022, reflecting strong demand and constrained supply. Gold, while more stable, 
-                        showed gradual increases, especially during periods of market uncertainty, with WTI expressed in gold ounces fluctuating between approximately 0.024 and 0.065. 
-                        Notably, spikes in the WTI-to-gold ratio occurred during early 2022, coinciding with escalating energy prices and global supply disruptions. 
-                        Subsequent corrections in both commodities saw the ratio moderate, highlighting gold’s role as a hedge. 
-                        Overall, the interplay of rising oil prices, relative gold stability, and global macroeconomic factors underscores the complex relationship between energy and precious 
-                        metals markets during this period.
+                        Between December 2020 and November 2022, WTI crude oil and gold prices exhibited notable volatility, reflecting shifts in global economic conditions 
+                        and market sentiment. WTI started around $44–45 per barrel and steadily increased, reaching peaks above $120 in mid-2022, while gold fluctuated from 
+                        roughly $1,800 to over $2,000 per ounce. The WTI-to-gold ratio, representing barrels of oil per gram of gold, shows significant variation, rising from 
+                        below 0.7 in late 2020 to over 1.7 in mid-2022, indicating periods when oil became relatively more expensive versus gold. Early 2022 saw a sharp surge 
+                        in oil prices, outpacing gold gains, likely due to geopolitical tensions and supply constraints, whereas later in the year, oil corrected while gold 
+                        remained elevated, stabilizing the WTI-in-gold ratio near 1.3–1.5, reflecting more balanced market conditions between energy and safe-haven assets.
                     </div>
 
                 </div>
@@ -128,8 +126,8 @@
                 <div class="card chart-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                         <div>
-                            <strong>Oil price, Brent</strong>
-                            <div class="muted">USD</div>
+                            <strong>Oil price in gold</strong>
+                            <div class="muted">g of gold, NYMEX WTI vs NYMEX Gold</div>
                         </div>
                         <div class="controls">
                             <button id="exportCsv">Export CSV</button>
@@ -160,8 +158,8 @@
                             <tr>
                                 <th style="text-align:left;padding:8px">Date</th>
                                 <th style="text-align:right;padding:8px">Oil Price - WTI (USD / barrel)</th>
-                                <th style="text-align:right;padding:8px">Gold Price (USD / once)</th>
-                                <th style="text-align:right;padding:8px">Oil Price in Gold (once / barrel)</th>
+                                <th style="text-align:right;padding:8px">Gold Price (USD / g)</th>
+                                <th style="text-align:right;padding:8px">Oil Price in Gold (g / barrel)</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -232,7 +230,6 @@
             const BZ_last = rows.length ? rows[rows.length - 1][header_idx['BZ']] : 0; 
             const CG_last = rows.length ? rows[rows.length - 1][header_idx['GC']] : 0;
             const CG_in_gold_last = rows.length ? rows[rows.length - 1][header_idx['CL/GC']] : 0;
-
  
             return { rows, CL_last, BZ_last, CG_last, CG_in_gold_last };
         }
@@ -290,7 +287,7 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { position: 'left', title: { display: true, text: 'Once of golg' }, beginAtZero: false }
+                    y: { position: 'left', title: { display: true, text: 'gram of gold' }, beginAtZero: false }
                 }
             };
             rigChart.update();
@@ -352,7 +349,7 @@
 
         // CSV export
         function toCsv(rows) {
-            const header = ['DateTime', 'WTI Price (USD)', 'Gold Price (USD)', 'WTI in Gold (Onces)'];
+            const header = ['DateTime', 'WTI Price (USD)', 'Gold Price (USD)', 'WTI in Gold (g)'];
             const lines = [header.join(',')];
             rows.forEach(r => lines.push([
                 r[header_idx['DateTime']], 
