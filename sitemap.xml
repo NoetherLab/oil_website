@@ -43,4 +43,10 @@
     <priority>1.0</priority>
   </url>
 
+  <url>
+    <loc>https://rig-central.com/oil_price_in_gold</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
 </urlset>
