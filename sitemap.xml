@@ -25,5 +25,22 @@
     <priority>1.0</priority>
   </url>
 
+   <url>
+    <loc>https://rig-central.com/oil_price_wti</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://rig-central.com/oil_price_brent</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://rig-central.com/spread_brent_wti</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
 
 </urlset>
