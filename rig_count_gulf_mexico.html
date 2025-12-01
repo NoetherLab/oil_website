@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2DQYKW6L6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-B2DQYKW6L6');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <meta name="description" content="Track North America rig activity by production basin with interactive charts and monthly Baker Hughes data. Compare Permian, Marcellus, Eagle Ford, Haynesville and more.">
+    <meta property="og:description" content="Track North America rig activity by production basin with interactive charts and monthly Baker Hughes data. Compare Permian, Marcellus, Eagle Ford, Haynesville and more.">
+    
+    <meta property="og:title" content="North America Rig Count by Basin - Charts & Data">
+    <title>North America Rig Count by Basin - Charts & Data</title>
+
+
+    <meta property="og:image" content="https://rig-central.com/logo_transparent.png">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://rig-central.com/">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="data.js"></script>
+   
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <!--<div class="logo">OG</div>-->
+            <div class="logo">
+                <img src="logo2_bis.png" alt="OG" width="60" height="60">
+            </div>
+            <div>
+                <h1>World Oil &amp; Gas Rig Count</h1>
+                <p class="lead">Rigs are specialized structures that drill wells to access underground hydrocarbons,
+                    enabling exploration and production through powerful equipment, skilled crews, and advanced drilling
+                    technology.</p>
+            </div>
+        </header>
+
+        <section class="grid" style="margin-bottom:12px">
+
+            <div class="card stat-card">
+                <div class="stat-title">North America</div>
+                <div id="activeRigs" class="stat-value">—</div>
+                <div class="muted">Operational rigs this week</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">Permian</div>
+                <div id="activeRigs_YoY" class="stat-value">—</div>
+                <div class="muted">Operational rigs this week</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">Eagle ford</div>
+                <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
+                <div class="muted">Operational rigs this week</div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-title">Haynesville</div>
+                <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
+                <div class="muted">Operational rigs this week</div>
+            </div>
+        </section>
+
+        <section class="grid" style="align-items:start">
+
+            <div style="grid-column:span 12">
+                
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="index.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                            </svg></a>
+                        </li>
+                        
+                        <li class="dropdown">
+                        <a href="#" class="dropbtn">World rig count ▾</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">World</a>
+                            <a href="rig_count_by_region.html">By region</a>
+                            <a href="rig_count_oil_vs_gas.html">Oil vs. Gas rigs</a>
+                            <a href="rig_count_offshore.html">Offshore</a>
+                        </div>
+                        </li>
+
+                        <li class="dropdown">
+                        <a href="#" class="dropbtn">North america rig count ▾</a>
+                        <div class="dropdown-content">
+                            <a href="rig_count_by_bassin.html">By production bassin</a>
+                        </div>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropbtn">Oil price ▾</a>
+                            <div class="dropdown-content">
+                                <a href="oil_price_wti.html">WTI</a>
+                                <a href="oil_price_brent.html">Brent</a>
+                                <a href="spread_brent_wti.html">Brent / WTI Spread</a>
+                                <a href="oil_price_in_gold.html">Oil price in gold</a>
+                            </div>
+                        </li>
+                        <!--     <li><a href="#">About</a></li> -->
+                    </ul>
+                </nav>
+
+            </div>
+
+            <div style="grid-column:span 8">
+                <div class="card chart-desc">
+                    <div>
+                            The latest North America rig data shows a noticeable uptick in drilling activity, led primarily by the Permian, which continues to dominate basin-level operations. 
+                            As of November 25, 2025, the Permian has climbed to 64 rigs, reinforcing its role as the region’s engine of growth after several months of steady gains. 
+                            The Marcellus also shows resilience with 7 active rigs, maintaining consistent gas-focused development despite broader market fluctuations. 
+                            Meanwhile, the Eagle Ford posts 10 rigs, reflecting a moderate but stable level of activity as operators balance oil and liquids-rich gas opportunities. 
+                            Across other basins, movements remain mixed, but the overall trend indicates a slow but sustained recovery from mid-year softness. Recent weekly increases, 
+                            especially in the Permian and Eagle Ford, suggest renewed confidence heading into late 2025 as operators respond to improving price signals and operational efficiencies.
+
+                        <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
+                    </div>
+
+                </div>
+
+                <div class="card chart-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <div>
+                            <strong>World active rig (Monthly)</strong>
+                            <div class="muted">Baker Hughes Rig Count Overview</div>
+                        </div>
+                        <div class="controls">
+                            <button id="exportCsv">Export CSV</button>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:6px" class="controls">
+                        <button id="filter1Y" class="button">1Y</button>
+                        <button id="filter5Y" class="button">5Y</button>
+                        <button id="filter10Y" class="button">10Y</button>
+                        <button id="filter25Y" class="button">25Y</button>
+                        <button id="filterAll" class="button">∞</button>
+                    </div>
+                    <div>
+                        <canvas id="rigChart" height="350"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card full-card">
+                <strong>Data Table</strong>
+                <div class="muted" style="margin:8px 0 12px">Monthly sample dataset used for charts. Use the Export CSV
+                    button to download.</div>
+                <div
+                    style="overflow:auto;max-height:220px;border-radius:8px;padding:6px;background:rgba(255,255,255,0.01)">
+                    <table id="dataTable" style="width:100%;border-collapse:collapse;font-size:13px">
+                        <thead style="position:sticky;top:0;background:transparent;color:var(--muted)">
+                            <tr>
+                                <th style="text-align:left;padding:8px">Date</th>
+                                <th style="text-align:right;padding:8px">Golf of mexico</th>
+                                <th style="text-align:right;padding:8px">Louisiana</th>
+                                <th style="text-align:right;padding:8px">Texas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer> © 2025 rig-central.com • Contact: <code> hello@rig-central.com </code> </footer>
+    </div>
+
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "North America Rig Count by Basin (Weekly)",
+        "description": "Weekly North America rig count by production basin (Permian, Marcellus, Eagle Ford, Haynesville, Williston and more). Includes interactive charts, weekly time series and downloadable CSV derived from Baker Hughes rig counts. Ideal for analysts tracking basin-level drilling trends, shale production signals, and short-term changes in upstream activity through late 2025 (latest week: 2025-11-25).",
+        "url": "https://rig-central.com/rig_count_by_bassin.html",
+        "sameAs": "https://rigcount.bakerhughes.com/",
+        "keywords": [
+            "North America rig count",
+            "rig count by basin",
+            "Permian rig count",
+            "Marcellus rig count",
+            "Eagle Ford rig count",
+            "Baker Hughes rig data",
+            "weekly rig count",
+            "shale basin trends",
+            "drilling activity 2025",
+            "rig count CSV"
+        ],
+        "creator": {
+            "@type": "Organization",
+            "name": "Rig Central",
+            "url": "https://rig-central.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Rig Central",
+            "url": "https://rig-central.com"
+        },
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "dateModified": "2025-11-25",
+        "temporalCoverage": "2015/2025-11-25",
+        "spatialCoverage": {
+            "@type": "Place",
+            "name": "North America"
+        },
+        "variableMeasured": [
+            "weekly_rig_count_total",
+            "rig_count_permian",
+            "rig_count_marcellus",
+            "rig_count_eagle_ford",
+            "rig_count_haynesville",
+            "rig_count_williston",
+            "rig_count_other_basins"
+        ],
+        "distribution": [
+            {
+            "@type": "DataDownload",
+            "name": "rig_count_bassin.csv",
+            "encodingFormat": "text/csv",
+            "contentUrl": "https://rig-central.com/data/rig_count_bassin.csv",
+            "description": "Weekly basin-level rig counts (CSV) for Permian, Marcellus, Eagle Ford, Haynesville, Williston and other basins."
+            }
+        ]
+        }
+        </script>
+
+
+    <script>
+
+        var dataset = data_nam_by_gom;
+
+        var header_idx = {}
+        dataset.header.forEach((value, index) => {
+            header_idx[value] = index
+        });
+
+
+
+        // DOM references for stats
+        const activeRigsEl = document.getElementById('activeRigs');
+        const activeRigsEvolEl = document.getElementById('activeRigs_YoY');
+
+        const avgPriceNorthAmericaEl = document.getElementById('activeRigs_NorthAmerica');
+        const avgPriceNorthAmericaShareEl = document.getElementById('activeRigs_NorthAmerica_share');
+
+        // table body
+        const tableBody = document.getElementById('tableBody');
+
+        // Helper to compute aggregates for a given year
+        function aggregatesForYear(from_date, to_date) {
+            const rows = dataset.data.filter(r => {
+                date = new Date(r[header_idx['DateTime']]);
+                date_condition = date >= from_date && date < to_date;
+                return date_condition;
+            });
+
+            last_row = rows[rows.length - 1];
+
+            const rigs = 0; //last_row.slice(1).reduce((a, b) => a + b, 0);
+            const rigsPermian = 0; //rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true']] : 0; 
+            const rigsEagleFord = 0; //rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=louisiana']] : 0; 
+            const rigsEHaynesville = 0;// rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=texas']] : 0; 
+
+            return { rows, rigs, rigsPermian, rigsEagleFord, rigsEHaynesville };
+        }
+
+        // ---------- CHARTS ----------
+        const rigCtx = document.getElementById('rigChart');
+
+        const rigChart = new Chart(rigCtx, {
+            type: 'bar',
+            data: { labels: [], datasets: [] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: { legend: { display: true } }
+            }
+        });
+
+
+
+        function renderYear(from_date, to_date) {
+            const agg = aggregatesForYear(from_date, to_date);
+
+            activeRigsEl.textContent = agg.rigs.toFixed(0);
+            activeRigsEvolEl.textContent = agg.rigsPermian.toFixed(0) ;
+            avgPriceNorthAmericaEl.textContent = agg.rigsEagleFord.toFixed(0);
+            avgPriceNorthAmericaShareEl.textContent = agg.rigsEHaynesville.toFixed(0);
+
+
+   
+            // Table
+            tableBody.innerHTML = '';
+            const reverseRows = [...agg.rows].reverse();
+            reverseRows.forEach(r => {
+                const tr = document.createElement('tr');
+
+                rows_html = `<td style="padding:8px">${r[header_idx['DateTime']]}</td>`;
+
+                const v = r[header_idx['what=rig_count.isGOM=true']];
+                if(v === null || v === undefined || isNaN(v)) {
+                    rows_html += `<td style="padding:8px;text-align:right">—</td>`;
+                } else {
+                    rows_html += `<td style="padding:8px;text-align:right">${v.toFixed(0)}</td>`;
+                }
+                const v2 = r[header_idx['what=rig_count.isGOM=true.geo2=louisiana']];
+                if(v2 === null || v2 === undefined || isNaN(v2)) {
+                    rows_html += `<td style="padding:8px;text-align:right">—</td>`;
+                } else {
+                    rows_html += `<td style="padding:8px;text-align:right">${v2.toFixed(0)}</td>`;
+                }
+                const v3 = r[header_idx['what=rig_count.isGOM=true.geo2=texas']];
+                if(v3 === null || v3 === undefined || isNaN(v3)) {
+                    rows_html += `<td style="padding:8px;text-align:right">—</td>`;
+                } else {
+                    rows_html += `<td style="padding:8px;text-align:right">${v3.toFixed(0)}</td>`;
+                }
+
+                tr.innerHTML = rows_html;
+                tableBody.appendChild(tr);
+            });
+
+
+
+
+            // Production/Price chart: dual axes
+            const labels = agg.rows.map(r => r[header_idx['DateTime']]);
+            const rig_gom_lousiana = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=louisiana']]);
+            const rig_gom_texas = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=texas']]);
+            const rig_gom = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true']]);
+
+
+
+            rigChart.data.labels = labels;
+            rigChart.data.datasets = [
+                    { type: 'line', label: 'Golf of mexico', yAxisID: 'y', data: rig_gom, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(178,102,255,0.18)', borderColor: 'rgba(178,102,255,0.9)' },
+                    { type: 'line', label: 'Texas', yAxisID: 'y', data: rig_gom_texas, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(102,255,204,0.18)', borderColor: 'rgba(102,255,204,0.9)' },
+                    { type: 'line', label: 'Lousiana', yAxisID: 'y', data: rig_gom_lousiana, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(255,178,102,0.18)', borderColor: 'rgba(255,178,102,0.9)' }
+                            
+     ];
+            rigChart.options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        position: 'left', 
+                        title: { display: true, text: 'Unit' }, 
+                        beginAtZero: false,
+                        stacked: true },
+                    x: {
+                        stacked: true
+                    }
+                }
+            };
+            rigChart.update();
+
+        }
+
+
+
+        to_date = new Date();
+        from_date = new Date();
+        from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 10));
+
+
+        // initial render
+        renderYear(from_date, to_date);
+
+
+        document.getElementById('filter1Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 1));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter5Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 5));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter10Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 10));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filter25Y').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 25));
+
+            renderYear(from_date, to_date);
+        });
+        document.getElementById('filterAll').addEventListener('click', () => {
+
+            to_date = new Date();
+            from_date = new Date();
+            from_date = new Date(from_date.setFullYear(from_date.getFullYear() - 100));
+
+            renderYear(from_date, to_date);
+        });
+
+
+
+
+            // Production/Price chart: dual axes
+            const labels = agg.rows.map(r => r[header_idx['DateTime']]);
+            const rig_gom_lousiana = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=louisiana']]);
+            const rig_gom_texas = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=texas']]);
+            const rig_gom = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true']]);
+
+
+
+            rigChart.data.labels = labels;
+            rigChart.data.datasets = [
+                    { type: 'line', label: 'Golf of mexico', yAxisID: 'y', data: rig_gom, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(178,102,255,0.18)', borderColor: 'rgba(178,102,255,0.9)' },
+                    { type: 'line', label: 'Texas', yAxisID: 'y', data: rig_gom_texas, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(102,255,204,0.18)', borderColor: 'rgba(102,255,204,0.9)' },
+                    { type: 'line', label: 'Lousiana', yAxisID: 'y', data: rig_gom_lousiana, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(255,178,102,0.18)', borderColor: 'rgba(255,178,102,0.9)' }
+                            
+     ];
+
+        // CSV export
+        function toCsv(rows) {
+            const header = ['DateTime', 'Golf of mexico', 'Louisiana', 'Texas'];
+            const lines = [header.join(',')];
+            rows.forEach(r => lines.push([
+                r[header_idx['DateTime']], 
+                r[header_idx['what=rig_count.isGOM=true.geo2=louisiana']], 
+                r[header_idx['what=rig_count.isGOM=true.geo2=texas']], 
+                r[header_idx['what=rig_count.isGOM=true']]
+            ].join(',')));
+            return lines.join('\n');
+        }
+
+        document.getElementById('exportCsv').addEventListener('click', () => {
+
+            gtag('event', 'button_click', {page: 'index', id: 'exportCsv'});
+
+            const agg = aggregatesForYear(from_date, to_date);
+            const csv = toCsv(agg.rows);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `rig_count_gulf_of_mexico.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
+
+
+
+    </script>
+</body>
+
+</html>
