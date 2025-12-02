@@ -181,6 +181,59 @@
     </div>
 
     <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Oil Price in Gold – Historical Dataset",
+    "description": "Daily and historical dataset showing WTI crude oil priced in grams of gold, including WTI price, gold price, and the oil-in-gold ratio. Charts, analysis, and downloadable CSV included.",
+    "url": "https://rig-central.com/oil_price_in_gold.html",
+    "keywords": [
+        "oil price in gold",
+        "WTI vs gold",
+        "commodity ratio",
+        "WTI price",
+        "gold price",
+        "oil gold ratio",
+        "energy market data",
+        "historical commodity prices"
+    ],
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "creator": {
+        "@type": "Organization",
+        "name": "Rig Central",
+        "url": "https://rig-central.com/"
+    },
+    "isAccessibleForFree": true,
+    "measurementTechnique": "WTI crude oil price (USD per barrel) divided by gold price (USD per gram) to compute WTI-in-gold ratio",
+    "distribution": [
+        {
+        "@type": "DataDownload",
+        "encodingFormat": "text/csv",
+        "name": "Oil Price in Gold – CSV Export"
+        }
+    ],
+    "variableMeasured": [
+        {
+        "@type": "PropertyValue",
+        "name": "WTI Price",
+        "description": "WTI crude oil price in USD per barrel"
+        },
+        {
+        "@type": "PropertyValue",
+        "name": "Gold Price",
+        "description": "Gold price in USD per gram"
+        },
+        {
+        "@type": "PropertyValue",
+        "name": "Oil Price in Gold",
+        "description": "WTI priced in grams of gold (WTI ÷ Gold)"
+        }
+    ]
+    }
+    </script>
+
+
+    <script type="application/ld+json">
         {
         "@context": "https://schema.org",
         "@type": "Dataset",

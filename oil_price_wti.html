@@ -179,29 +179,53 @@
         <footer> © 2025 rig-central.com • Contact: <code> hello@rig-central.com </code> </footer>
     </div>
 
+
+
     <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "WTI Crude Oil Price – Historical Daily Dataset",
+    "description": "Daily historical WTI crude oil prices with interactive charts, trend analysis, and downloadable CSV. Includes long-term market trends, price spikes, corrections, and recent values from NYMEX.",
+    "url": "https://rig-central.com/oil_price_wti.html",
+    "sameAs": [
+        "https://rig-central.com/oil_price_wti"
+    ],
+    "keywords": [
+        "WTI price",
+        "crude oil price",
+        "oil price chart",
+        "NYMEX WTI",
+        "energy market data",
+        "historical oil prices",
+        "commodity prices"
+    ],
+    "creator": {
+        "@type": "Organization",
+        "name": "Rig Central",
+        "url": "https://rig-central.com/"
+    },
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "variableMeasured": [
         {
-        "@context": "https://schema.org",
-        "@type": "Dataset",
-        "name": "Oil price WTI",
-        "description": "Daily oil price WTI dataset",
-        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
-        "creator": {
-            "@type": "Organization",
-            "name": "Rig Central",
-            "url": "https://rig-central.com/"
-        },
-        "isAccessibleForFree" : true,
-        "keywords": ["oil price", "WTI", "crude oil", "energy data"],
-        "url": "https://rig-central.com/oil_price_wti",
-        "distribution":[
-         {
-            "@type":"DataDownload",
-            "encodingFormat":"CSV",
-            "contentUrl":"https://rig-central.com/"
-         }]
+        "@type": "PropertyValue",
+        "name": "WTI Price",
+        "unitText": "USD per barrel",
+        "description": "Daily WTI crude oil settlement price"
         }
+    ],
+    "measurementTechnique": "NYMEX daily settlement price for WTI crude oil (CL futures)",
+    "distribution": [
+        {
+        "@type": "DataDownload",
+        "name": "WTI Oil Price – CSV",
+        "encodingFormat": "text/csv",
+        }
+    ]
+    }
     </script>
+
 
     <script>
 

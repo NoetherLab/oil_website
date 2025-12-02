@@ -178,33 +178,53 @@
         <footer> © 2025 rig-central.com • Contact: <code> hello@rig-central.com </code> </footer>
     </div>
 
-    <script type="application/ld+json">
+        <script type="application/ld+json">
         {
         "@context": "https://schema.org",
         "@type": "Dataset",
-        "name": "Oil price Brent",
-        "description": "Daily oil price Brent dataset",
-        "license" : "https://creativecommons.org/publicdomain/zero/1.0/",
+        "name": "Brent Crude Oil Price – Historical Daily Dataset",
+        "description": "Daily historical Brent crude oil prices with interactive charts, trend analysis, market cycle insights, and downloadable CSV. Includes multi-year trends, price shocks, recovery phases, and long-term benchmark movements.",
+        "url": "https://rig-central.com/oil_price_brent.html",
+        "sameAs": [
+            "https://rig-central.com/oil_price_brent"
+        ],
+        "keywords": [
+            "Brent price",
+            "Brent crude oil",
+            "oil price chart",
+            "energy data",
+            "commodity prices",
+            "historical oil prices",
+            "ICE Brent",
+            "market analysis"
+        ],
         "creator": {
             "@type": "Organization",
             "name": "Rig Central",
             "url": "https://rig-central.com/"
         },
-        "isAccessibleForFree" : true,
-        "keywords": ["oil price", "Brent", "crude oil", "energy data", "commodity prices", "historical prices", "market analysis"],
-        "url": "https://rig-central.com/oil_price_brent",
-        "distribution":[
-         {
-            "@type":"DataDownload",
-            "encodingFormat":"CSV",
-            "contentUrl":"https://rig-central.com/"
-         }]
+        "isAccessibleForFree": true,
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "variableMeasured": [
+            {
+            "@type": "PropertyValue",
+            "name": "Brent Price",
+            "unitText": "USD per barrel",
+            "description": "Daily Brent crude oil benchmark price from ICE Futures Europe"
+            }
+        ],
+        "measurementTechnique": "ICE Brent crude oil daily settlement price (BZ futures)",
+        "distribution": [
+            {
+            "@type": "DataDownload",
+            "name": "Brent Oil Price – CSV",
+            "encodingFormat": "text/csv"
+            }
+        ]
         }
-    </script>
+        </script>
 
     <script>
-
-         
 
         var dataset = data_prices;
 
