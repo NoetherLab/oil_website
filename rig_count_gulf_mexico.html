@@ -13,11 +13,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <meta name="description" content="Track North America rig activity by production basin with interactive charts and monthly Baker Hughes data. Compare Permian, Marcellus, Eagle Ford, Haynesville and more.">
-    <meta property="og:description" content="Track North America rig activity by production basin with interactive charts and monthly Baker Hughes data. Compare Permian, Marcellus, Eagle Ford, Haynesville and more.">
+    <meta name="description" content="Track weekly Gulf of Mexico rig counts with updated data for Louisiana and Texas. Latest figures show a strong rebound, rising to 8 rigs in November 2025.">
+    <meta property="og:description" content="Track weekly Gulf of Mexico rig counts with updated data for Louisiana and Texas. Latest figures show a strong rebound, rising to 8 rigs in November 2025.">
     
-    <meta property="og:title" content="North America Rig Count by Basin - Charts & Data">
-    <title>North America Rig Count by Basin - Charts & Data</title>
+    <meta property="og:title" content="Rig Count Gulf of Mexico - Charts & Data">
+    <title>Rig Count Gulf of Mexico - Charts & Data</title>
 
 
     <meta property="og:image" content="https://rig-central.com/logo_transparent.png">
@@ -58,19 +58,19 @@
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Permian</div>
+                <div class="stat-title">Golf of Mexico</div>
                 <div id="activeRigs_YoY" class="stat-value">—</div>
                 <div class="muted">Operational rigs this week</div>
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Eagle ford</div>
+                <div class="stat-title">Golf of Mexico - Lousiana</div>
                 <div id="activeRigs_NorthAmerica" class="stat-value">—</div>
                 <div class="muted">Operational rigs this week</div>
             </div>
 
             <div class="card stat-card">
-                <div class="stat-title">Haynesville</div>
+                <div class="stat-title">Golf of Mexico - Texas</div>
                 <div id="activeRigs_NorthAmerica_share" class="stat-value">—</div>
                 <div class="muted">Operational rigs this week</div>
             </div>
@@ -102,6 +102,7 @@
                         <a href="#" class="dropbtn">North america rig count ▾</a>
                         <div class="dropdown-content">
                             <a href="rig_count_by_bassin.html">By production bassin</a>
+                            <a href="rig_count_gulf_mexico.html">Golf of Mexico</a>
                         </div>
                         </li>
 
@@ -123,12 +124,12 @@
             <div style="grid-column:span 8">
                 <div class="card chart-desc">
                     <div>
-                            The latest North America rig data shows a noticeable uptick in drilling activity, led primarily by the Permian, which continues to dominate basin-level operations. 
-                            As of November 25, 2025, the Permian has climbed to 64 rigs, reinforcing its role as the region’s engine of growth after several months of steady gains. 
-                            The Marcellus also shows resilience with 7 active rigs, maintaining consistent gas-focused development despite broader market fluctuations. 
-                            Meanwhile, the Eagle Ford posts 10 rigs, reflecting a moderate but stable level of activity as operators balance oil and liquids-rich gas opportunities. 
-                            Across other basins, movements remain mixed, but the overall trend indicates a slow but sustained recovery from mid-year softness. Recent weekly increases, 
-                            especially in the Permian and Eagle Ford, suggest renewed confidence heading into late 2025 as operators respond to improving price signals and operational efficiencies.
+                        The dataset tracks weekly oil and gas rig activity across the Gulf of Mexico, Louisiana, and Texas from late 2024 through late 2025. Activity begins with moderate 
+                        variation—Gulf of Mexico rigs fluctuate between 5 and 6 through early summer 2025, while Louisiana and Texas remain relatively stable. A gradual strengthening trend 
+                        develops mid-year, with the Gulf climbing to 7 rigs and Texas to 8, signaling improving offshore momentum. This steadiness continues into early fall before a 
+                        temporary dip occurs in late September and October. However, the final weeks show a strong rebound: by November 2025, Gulf of Mexico rigs rise to 8, 
+                        Louisiana returns to 2, and Texas climbs to 10. These last data points highlight renewed drilling confidence and a clear upward shift in regional offshore 
+                        activity heading into year-end, suggesting accelerating operational deployment and stronger energy market sentiment.
 
                         <i>Source: <a class="muted" href="https://rigcount.bakerhughes.com/">Baker Hughes</a></i>
                     </div>
@@ -138,7 +139,7 @@
                 <div class="card chart-card">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                         <div>
-                            <strong>World active rig (Monthly)</strong>
+                            <strong>Active rig in the Gulf of mexico (Weekly)</strong>
                             <div class="muted">Baker Hughes Rig Count Overview</div>
                         </div>
                         <div class="controls">
@@ -154,6 +155,9 @@
                     </div>
                     <div>
                         <canvas id="rigChart" height="350"></canvas>
+                    </div>
+                     <div>
+                        <canvas id="rigChartByState" height="350"></canvas>
                     </div>
                 </div>
             </div>
@@ -184,23 +188,21 @@
 
     <script type="application/ld+json">
         {
-        "@context": "https://schema.org",
+        "@context": "https://schema.org/",
         "@type": "Dataset",
-        "name": "North America Rig Count by Basin (Weekly)",
-        "description": "Weekly North America rig count by production basin (Permian, Marcellus, Eagle Ford, Haynesville, Williston and more). Includes interactive charts, weekly time series and downloadable CSV derived from Baker Hughes rig counts. Ideal for analysts tracking basin-level drilling trends, shale production signals, and short-term changes in upstream activity through late 2025 (latest week: 2025-11-25).",
-        "url": "https://rig-central.com/rig_count_by_bassin.html",
+        "name": "Gulf of Mexico Rig Count (Weekly)",
+        "description": "Weekly oil & gas rig counts for the Gulf of Mexico with state breakdowns for Louisiana and Texas. Time series covers Dec 5, 2024 through Nov 25, 2025; latest values show a rebound to 8 rigs in the Gulf of Mexico and 10 rigs in Texas (week of 2025-11-25). Ideal for analysts tracking offshore drilling trends and short-term changes in upstream activity.",
+        "url": "https://rig-central.com/rig_count_gulf_mexico.html",
         "sameAs": "https://rigcount.bakerhughes.com/",
         "keywords": [
-            "North America rig count",
-            "rig count by basin",
-            "Permian rig count",
-            "Marcellus rig count",
-            "Eagle Ford rig count",
-            "Baker Hughes rig data",
+            "Gulf of Mexico rig count",
+            "offshore rig count",
+            "Baker Hughes rig count",
             "weekly rig count",
-            "shale basin trends",
-            "drilling activity 2025",
-            "rig count CSV"
+            "Louisiana rig count",
+            "Texas rig count",
+            "offshore drilling trends",
+            "rig count 2025"
         ],
         "creator": {
             "@type": "Organization",
@@ -214,31 +216,39 @@
         },
         "license": "https://creativecommons.org/publicdomain/zero/1.0/",
         "dateModified": "2025-11-25",
-        "temporalCoverage": "2015/2025-11-25",
+        "temporalCoverage": "2024-12-05/2025-11-25",
         "spatialCoverage": {
             "@type": "Place",
-            "name": "North America"
+            "name": "Gulf of Mexico (Louisiana, Texas)"
         },
+        "measurementTechnique": "Baker Hughes weekly rig count",
         "variableMeasured": [
-            "weekly_rig_count_total",
-            "rig_count_permian",
-            "rig_count_marcellus",
-            "rig_count_eagle_ford",
-            "rig_count_haynesville",
-            "rig_count_williston",
-            "rig_count_other_basins"
+            "weekly_rig_count_gulf_of_mexico_total",
+            "weekly_rig_count_louisiana",
+            "weekly_rig_count_texas"
         ],
         "distribution": [
             {
             "@type": "DataDownload",
-            "name": "rig_count_bassin.csv",
+            "name": "rig_count_gulf_of_mexico.csv",
             "encodingFormat": "text/csv",
-            "contentUrl": "https://rig-central.com/data/rig_count_bassin.csv",
-            "description": "Weekly basin-level rig counts (CSV) for Permian, Marcellus, Eagle Ford, Haynesville, Williston and other basins."
+            "description": "Weekly Gulf of Mexico rig counts (CSV) including Louisiana and Texas breakdowns. Latest week: 2025-11-25."
             }
-        ]
+        ],
+        "about": {
+            "@type": "Thing",
+            "name": "Offshore rig activity",
+            "description": "Operational oil & gas rigs active in the Gulf of Mexico, with state-level (Louisiana, Texas) attribution."
+        },
+        "descriptionLanguage": "en",
+        "primarySource": {
+            "@type": "WebSite",
+            "name": "Baker Hughes Rig Count",
+            "url": "https://rigcount.bakerhughes.com/"
         }
-        </script>
+        }
+    </script>
+
 
 
     <script>
@@ -270,20 +280,39 @@
                 return date_condition;
             });
 
-            last_row = rows[rows.length - 1];
+  
+            const rig_gom_lousiana = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=louisiana']] : 0; 
+            const rig_gom_texas = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=texas']] : 0; 
 
-            const rigs = 0; //last_row.slice(1).reduce((a, b) => a + b, 0);
-            const rigsPermian = 0; //rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true']] : 0; 
-            const rigsEagleFord = 0; //rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=louisiana']] : 0; 
-            const rigsEHaynesville = 0;// rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true.geo2=texas']] : 0; 
+            const rig_gom_true = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=true']] : 0; 
+            const rig_gom_false = rows.length ? rows[rows.length - 1][header_idx['what=rig_count.isGOM=false']] : 0; 
 
-            return { rows, rigs, rigsPermian, rigsEagleFord, rigsEHaynesville };
+    
+            rigs = rig_gom_true + rig_gom_false;
+                  
+        
+            return { rows, rigs, rig_gom_true, rig_gom_lousiana, rig_gom_texas };
         }
 
         // ---------- CHARTS ----------
         const rigCtx = document.getElementById('rigChart');
 
+        const rigChartByStateCtx = document.getElementById('rigChartByState');
+
         const rigChart = new Chart(rigCtx, {
+            type: 'bar',
+            data: { labels: [], datasets: [] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: { legend: { display: true } }
+            }
+        });
+
+          const rigChartByState = new Chart(rigChartByStateCtx, {
             type: 'bar',
             data: { labels: [], datasets: [] },
             options: {
@@ -301,13 +330,14 @@
         function renderYear(from_date, to_date) {
             const agg = aggregatesForYear(from_date, to_date);
 
+
             activeRigsEl.textContent = agg.rigs.toFixed(0);
-            activeRigsEvolEl.textContent = agg.rigsPermian.toFixed(0) ;
-            avgPriceNorthAmericaEl.textContent = agg.rigsEagleFord.toFixed(0);
-            avgPriceNorthAmericaShareEl.textContent = agg.rigsEHaynesville.toFixed(0);
+            activeRigsEvolEl.textContent = agg.rig_gom_true.toFixed(0) ;
+            avgPriceNorthAmericaEl.textContent = agg.rig_gom_lousiana.toFixed(0);
+            avgPriceNorthAmericaShareEl.textContent = agg.rig_gom_texas.toFixed(0);
 
 
-   
+
             // Table
             tableBody.innerHTML = '';
             const reverseRows = [...agg.rows].reverse();
@@ -348,16 +378,45 @@
             const rig_gom_texas = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=texas']]);
             const rig_gom = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true']]);
 
+            /*
+
+                     { type: 'line', label: 'Africa', yAxisID: 'y', data: rigData_africa, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(126, 214, 246,0.18)', borderColor: 'rgba(126, 214, 246,0.9)' },
+                { type: 'line', label: 'Asia/Pacific', yAxisID: 'y', data: rigData_asia_pacific, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(121, 125, 246,0.18)', borderColor: 'rgba(121, 125, 246,0.9)' },
+                { type: 'line', label: 'Europe', yAxisID: 'y', data: rigData_europe, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(75, 222, 222,0.18)', borderColor: 'rgba(75, 222, 222,0.9)' },
+                { type: 'line', label: 'Latin America', yAxisID: 'y', data: rigData_latin_america, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(54,162,235,0.18)', borderColor: 'rgba(54,162,235,0.9)' },
+                { type: 'line', label: 'Middle-East', yAxisID: 'y', data: rigData_middle_east, tension: 0.10, pointRadius: 1, borderWidth: 2, 
+                    backgroundColor: 'rgba(27, 167, 236,0.18)', borderColor: 'rgba(27, 167, 236,0.9)' },
+                { type: 'line', label: 'North America', yAxisID: 'y', data: rigData_north_america, tension: 0.10, pointRadius: 1, borderWidth: 2,
+                    backgroundColor: 'rgba(31, 48, 151,0.18)', borderColor: 'rgba(31, 48, 151,0.9)'}*/
 
 
             rigChart.data.labels = labels;
             rigChart.data.datasets = [
-                    { type: 'line', label: 'Golf of mexico', yAxisID: 'y', data: rig_gom, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(178,102,255,0.18)', borderColor: 'rgba(178,102,255,0.9)' },
-                    { type: 'line', label: 'Texas', yAxisID: 'y', data: rig_gom_texas, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(102,255,204,0.18)', borderColor: 'rgba(102,255,204,0.9)' },
-                    { type: 'line', label: 'Lousiana', yAxisID: 'y', data: rig_gom_lousiana, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(255,178,102,0.18)', borderColor: 'rgba(255,178,102,0.9)' }
+                    { type: 'line', label: 'Golf of mexico', yAxisID: 'y', data: rig_gom, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(126, 214, 246,0.18)', borderColor: 'rgba(126, 214, 246,0.9)' }
+                     ];
+            rigChart.options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        position: 'left', 
+                        title: { display: true, text: 'Unit' }, 
+                        beginAtZero: false}
+                }
+            };
+            rigChart.update();
+
+            rigChartByState.data.labels = labels;
+            rigChartByState.data.datasets = [
+                    { type: 'line', label: 'Texas', yAxisID: 'y', data: rig_gom_texas, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(75, 222, 222,0.18)', borderColor: 'rgba(75, 222, 222,0.9)' },
+                    { type: 'line', label: 'Lousiana', yAxisID: 'y', data: rig_gom_lousiana, fill: true, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(31, 48, 151,0.18)', borderColor: 'rgba(31, 48, 151,0.9)'}
                             
      ];
-            rigChart.options = {
+            rigChartByState.options = {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
@@ -371,7 +430,7 @@
                     }
                 }
             };
-            rigChart.update();
+            rigChartByState.update();
 
         }
 
@@ -427,24 +486,6 @@
             renderYear(from_date, to_date);
         });
 
-
-
-
-            // Production/Price chart: dual axes
-            const labels = agg.rows.map(r => r[header_idx['DateTime']]);
-            const rig_gom_lousiana = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=louisiana']]);
-            const rig_gom_texas = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true.geo2=texas']]);
-            const rig_gom = agg.rows.map(r => r[header_idx['what=rig_count.isGOM=true']]);
-
-
-
-            rigChart.data.labels = labels;
-            rigChart.data.datasets = [
-                    { type: 'line', label: 'Golf of mexico', yAxisID: 'y', data: rig_gom, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(178,102,255,0.18)', borderColor: 'rgba(178,102,255,0.9)' },
-                    { type: 'line', label: 'Texas', yAxisID: 'y', data: rig_gom_texas, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(102,255,204,0.18)', borderColor: 'rgba(102,255,204,0.9)' },
-                    { type: 'line', label: 'Lousiana', yAxisID: 'y', data: rig_gom_lousiana, tension: 0.10, pointRadius: 1, borderWidth: 2, backgroundColor: 'rgba(255,178,102,0.18)', borderColor: 'rgba(255,178,102,0.9)' }
-                            
-     ];
 
         // CSV export
         function toCsv(rows) {
