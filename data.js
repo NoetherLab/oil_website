@@ -2173,7 +2173,6 @@ const data_prices =
 {
  "header":["DateTime", "BZ", "BZ_CL_Spread", "BZ_CL_Spread_Rel", "CL", "CL/GC", "GC"],
  "data":[
-["2006-11-07", null, null, null, 58.93, 2.6700273, 625.7],
 ["2006-11-08", null, null, null, 59.83, 2.7517045, 616.4],
 ["2006-11-09", null, null, null, 61.16, 2.730481, 635.0],
 ["2006-11-10", null, null, null, 59.59, 2.6883302, 628.4],
